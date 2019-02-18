@@ -9,12 +9,12 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
 
-class ApiClient {
+public class ApiClientAction {
 
     private final String server = "http://localhost:8080";
     private final Client client;
 
-    ApiClient(final String username, final String password) {
+    public ApiClientAction(final String username, final String password) {
         HttpAuthenticationFeature feature = HttpAuthenticationFeature
                 .basicBuilder()
                 .nonPreemptive()
@@ -26,7 +26,7 @@ class ApiClient {
         client = ClientBuilder.newClient(config);
     }
 
-    WebTarget getWebTargetInstance(final String path){
+    public WebTarget getWebTargetInstance(final String path){
         return client.target(formURI(path));
     }
 
