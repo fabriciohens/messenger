@@ -3,7 +3,7 @@ package context;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ApiTestContext {
+public class IntegrationTestContext {
 
     private static Map<String, Object> context;
 
