@@ -60,21 +60,7 @@ public class RoomSteps {
         Assert.assertEquals(200, response.getStatus());
     }
 
-    @Then("$nameOfUSer sees the room $nameOfRoom have $numOfParticipants participants")
-    public void thenNameOfUSerSeesTheRoomNameOfRoomHaveNumOfParticipantsParticipants(String nameOfUser, String nameOfRoom, int numOfParticipants) {
-        User user = (User) IntegrationTestContext.get(nameOfUser);
-        Room room = (Room) IntegrationTestContext.get(nameOfRoom);
-
-        GetRoomAction getRoomAction = new GetRoomAction(user.getEmail(), user.getPassword());
-
-        Response response = getRoomAction.get(room.getId());
-        Room returnedRoom = response.readEntity(Room.class);
-
-        Assert.assertEquals(numOfParticipants, returnedRoom.getParticipants().size());
-        Assert.assertEquals(200, response.getStatus());
-    }
-
-    @When("$nameOfUSer removes $nameOfUserToRemove from the room $nameOfRoom")
+    @When("$nameOfUser removes $nameOfUserToRemove from the room $nameOfRoom")
     public void whenNameOfUSerRemovesNameOfUserToRemoveFromTheRoomNameOfRoom(String nameOfUser, String nameOfUserToRemove, String nameOfRoom) {
         User user = (User) IntegrationTestContext.get(nameOfUser);
         User userToRemove = (User) IntegrationTestContext.get(nameOfUserToRemove);
@@ -87,6 +73,20 @@ public class RoomSteps {
         IntegrationTestContext.put(nameOfRoom, returnedRoom);
 
         Assert.assertNotNull(returnedRoom.getId());
+        Assert.assertEquals(200, response.getStatus());
+    }
+
+    @Then("$nameOfUser sees the room $nameOfRoom have $numOfParticipants participants")
+    public void thenNameOfUSerSeesTheRoomNameOfRoomHaveNumOfParticipantsParticipants(String nameOfUser, String nameOfRoom, int numOfParticipants) {
+        User user = (User) IntegrationTestContext.get(nameOfUser);
+        Room room = (Room) IntegrationTestContext.get(nameOfRoom);
+
+        GetRoomAction getRoomAction = new GetRoomAction(user.getEmail(), user.getPassword());
+
+        Response response = getRoomAction.get(room.getId());
+        Room returnedRoom = response.readEntity(Room.class);
+
+        Assert.assertEquals(numOfParticipants, returnedRoom.getParticipants().size());
         Assert.assertEquals(200, response.getStatus());
     }
 

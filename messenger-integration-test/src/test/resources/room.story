@@ -19,7 +19,7 @@ Examples:
 
 Scenario:
 Given Ed creates a new room Dudes with Edd, Eddy
-Then Ed sees the room Dudes will have 2 participants
+Then Ed sees the room Dudes have 2 participants
 
 Scenario:
 Given Bruna creates a new room Gals with Amanda, Liza, Carol
