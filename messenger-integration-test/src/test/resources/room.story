@@ -5,30 +5,37 @@ As a user
 I want to perform an action
 So that I can achieve a business goal
 
-
-Scenario: when an user creates a user the api would respond with the new user containing a new id
-Given a new user with role normal containing an id
+Scenario: SetUp
+Given a new user <nameOfUser> with role <nameOfRoom>
 Examples:
-|user
-|bruna
-|rodrigo
-|liza
-|carol
+|nameOfUser|nameOfRoom
+|Ed|NORMAL
+|Edd|NORMAL
+|Eddy|ADMIN
+|Bruna|ADMIN
+|Amanda|NORMAL
+|Liza|NORMAL
+|Carol|NORMAL
 
-Scenario: when an user creates a room the api would respond with the new room containing a new id
-Given an user and a new room with participants containing an id
-Examples:
-|user|room|participants
-|bruna|mists|rodrigo,liza,carol
-|rodrigo|gals|liza,carol
-|liza|nanmm|bruna,rodrigo,carol
-|carol|lony|bruna
+Scenario:
+Given Ed creates a new room Dudes with Edd, Eddy
+Then Ed sees the room Dudes will have 2 participants
 
-Scenario: when an user fetches his room by id using his credentials the api responds with the room
-When the user fetches his room by id using his credentials the api responds with the room
-Examples:
-|user|room
-|bruna|mists
-|rodrigo|gals
-|liza|nanmm
-|carol|lony
+Scenario:
+Given Bruna creates a new room Gals with Amanda, Liza, Carol
+When Bruna removes Amanda from the room Gals
+Then Bruna sees the room Gals have 4 participants
+
+Scenario:
+Given a new user Auditor with role AUDITOR
+Then the Auditor is able to fetche all rooms
+
+Scenario:
+Given Eddy updates name of the room Dudes to Pals
+Then Edd sees the room Dudes has a new name Pals
+
+Scenario:
+When Bruna deletes the room Gals
+When Ed deletes the room Dudes
+Then the user Bruna sees the room Gals does not exists anymore
+Then the user Ed sees the room Dudes does not exists anymore
