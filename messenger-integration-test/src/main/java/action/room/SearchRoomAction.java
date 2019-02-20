@@ -2,6 +2,7 @@ package action.room;
 
 import action.ApiClientAction;
 import com.messenger.model.Message;
+import com.messenger.utils.SearchType;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
@@ -18,7 +19,7 @@ public class SearchRoomAction extends ApiClientAction {
         webTarget = getWebTargetInstance(path);
     }
 
-    public Response searchRoom(final String searchType, final String searchParam) {
+    public Response searchRoom(final SearchType searchType, final String searchParam) {
         return webTarget
                 .queryParam("searchType", searchType)
                 .queryParam("searchParam", searchParam)

@@ -5,6 +5,7 @@ import action.user.CreateUserAction;
 import com.messenger.model.Message;
 import com.messenger.model.Room;
 import com.messenger.model.User;
+import com.messenger.utils.SearchType;
 import com.messenger.utils.UserRole;
 import context.IntegrationTestContext;
 import org.jbehave.core.annotations.Given;
@@ -183,13 +184,43 @@ public class RoomSteps {
         assertArrayEquals(namesOfReceivers.toArray(), sentMessage.getReceivers().stream().map(User::getFirstName).toArray());
     }
 
-    @Then("$nameOfUser searches rooms by $searchType $searchParam")
-    public void thenNameOfUserSearchesRoomsBySearchTypeSearchParam
-            (String nameOfUser, String searchType, String searchParam) {
+    @Then("$nameOfUser searches rooms by CONTENT $searchParam")
+    public void thenNameOfUserSearchesRoomsByContentSearchParam
+            (String nameOfUser, String searchParam) {
         User user = (User) IntegrationTestContext.get(nameOfUser);
 
         SearchRoomAction action = new SearchRoomAction(user.getEmail(), user.getPassword());
-        Response response = action.searchRoom(searchType, searchParam);
+        Response response = action.searchRoom(SearchType.CONTENT, searchParam);
+        List<Room> rooms = response.readEntity(new GenericType<List<Room>>() {
+        });
+
+        assertTrue(rooms.size() >= 1);
+        assertEquals(200, response.getStatus());
+    }
+
+    @Then("$nameOfUser searches rooms by SENDER $searchParam")
+    public void thenNameOfUserSearchesRoomsBySenderSearchParam
+            (String nameOfUser, String searchParam) {
+        User user = (User) IntegrationTestContext.get(nameOfUser);
+        User userToSearch = (User) IntegrationTestContext.get(searchParam);
+
+        SearchRoomAction action = new SearchRoomAction(user.getEmail(), user.getPassword());
+        Response response = action.searchRoom(SearchType.SENDER, userToSearch.getId());
+        List<Room> rooms = response.readEntity(new GenericType<List<Room>>() {
+        });
+
+        assertTrue(rooms.size() >= 1);
+        assertEquals(200, response.getStatus());
+    }
+
+    @Then("$nameOfUser searches rooms by RECEIVER $searchParam")
+    public void thenNameOfUserSearchesRoomsByReceiverSearchParam
+            (String nameOfUser, String searchParam) {
+        User user = (User) IntegrationTestContext.get(nameOfUser);
+        User userToSearch = (User) IntegrationTestContext.get(searchParam);
+
+        SearchRoomAction action = new SearchRoomAction(user.getEmail(), user.getPassword());
+        Response response = action.searchRoom(SearchType.RECEIVER, userToSearch.getId());
         List<Room> rooms = response.readEntity(new GenericType<List<Room>>() {
         });
 
@@ -208,7 +239,5 @@ public class RoomSteps {
 
         assertEquals(1, rooms.size());
         assertEquals(200, response.getStatus());
-
     }
-
 }
