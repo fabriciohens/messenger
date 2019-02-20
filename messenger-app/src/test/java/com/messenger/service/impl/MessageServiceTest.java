@@ -69,9 +69,9 @@ public class MessageServiceTest {
     @Test
     public void testSearchBySender() {
         User user = room.getParticipants().get(0);
-        when(userRepositoryMock.findById(anyString())).thenReturn(Optional.of(user));
+        when(userRepositoryMock.findFirstByFirstName(anyString())).thenReturn(user);
         when(messageRepositoryMock.findAllBySenderEquals(user)).thenReturn(Collections.singletonList(message));
-        List<Message> messagesFound = serviceToTest.search(SearchType.SENDER, id);
+        List<Message> messagesFound = serviceToTest.search(SearchType.SENDER, user.getFirstName());
         assertTrue(messagesFound.size() > 0);
     }
 
@@ -85,9 +85,9 @@ public class MessageServiceTest {
     @Test
     public void testSearchByReceiver() {
         User user = room.getParticipants().get(0);
-        when(userRepositoryMock.findById(anyString())).thenReturn(Optional.of(user));
+        when(userRepositoryMock.findFirstByFirstName(anyString())).thenReturn(user);
         when(messageRepositoryMock.findAllByReceiversIsContaining(user)).thenReturn(Collections.singletonList(message));
-        List<Message> messagesFound = serviceToTest.search(SearchType.RECEIVER, id);
+        List<Message> messagesFound = serviceToTest.search(SearchType.RECEIVER, user.getFirstName());
         assertTrue(messagesFound.size() > 0);
     }
 
