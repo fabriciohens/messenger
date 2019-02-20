@@ -22,7 +22,3 @@ When Rodrigo updates role of Fabricio to ADMIN
 Then Mari is unable to fetch all users
 Then Fabricio is able to fetch all users
 Then Fabricio is able to fetch user Mari
-
-Scenario: An user updates another user's role to ADMIN and this user test his role
-When Rodrigo updates role of Gabi to ADMIN
-Then Gabi is able to delete user Mari

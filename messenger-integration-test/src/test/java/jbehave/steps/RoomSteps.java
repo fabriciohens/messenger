@@ -126,28 +126,6 @@ public class RoomSteps {
         assertEquals(200, response.getStatus());
     }
 
-    @When("$nameOfUser deletes the room $nameOfRoom")
-    public void whenNameOfUserDeletesTheRoomNameOfRoom(String nameOfUser, String nameOfRoom) {
-        User user = (User) IntegrationTestContext.get(nameOfUser);
-        Room room = (Room) IntegrationTestContext.get(nameOfRoom);
-
-        DeleteRoomAction deleteRoomAction = new DeleteRoomAction(user.getEmail(), user.getPassword());
-        Response response = deleteRoomAction.delete(room.getId());
-
-        assertEquals(200, response.getStatus());
-    }
-
-    @Then("the user $nameOfUser sees the room $nameOfRoom does not exists anymore")
-    public void thenTheUserNameOfUserSeesTheRoomNameOfRoomDoesNotExistsAnymore(String nameOfUser, String nameOfRoom) {
-        User user = (User) IntegrationTestContext.get(nameOfUser);
-        Room room = (Room) IntegrationTestContext.get(nameOfRoom);
-
-        GetRoomAction getRoomAction = new GetRoomAction(user.getEmail(), user.getPassword());
-        Response response = getRoomAction.get(room.getId());
-
-        assertEquals(404, response.getStatus());
-    }
-
     @When("$nameOfUser has room $nameOfRoom with $participants")
     public void whenNameOfUserHasRoomNameOfRoomWithParticipants(String nameOfUser, String nameOfRoom, List<String> namesOfParticipants) {
         User user = (User) IntegrationTestContext.get(nameOfUser);

@@ -106,15 +106,4 @@ public class UserSteps {
         Assert.assertEquals(200, response.getStatus());
     }
 
-    @Then("$nameOfUser is able to delete user $nameOfUserToDelete")
-    public void thenNameOfUserIsAbleToDeleteUserNameOfUserToDelete(String nameOfUser, String nameOfUserToDelete) {
-        User user = (User) IntegrationTestContext.get(nameOfUser);
-
-        DeleteUserAction deleteUserAction = new DeleteUserAction(user.getEmail(), user.getPassword());
-
-        User userToDelete = (User) IntegrationTestContext.get(nameOfUserToDelete);
-        Response response = deleteUserAction.delete(user.getId());
-
-        Assert.assertEquals(200, response.getStatus());
-    }
 }

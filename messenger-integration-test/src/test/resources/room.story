@@ -44,9 +44,3 @@ Then Auditor searches rooms by CONTENT Hello
 Scenario: An user updates the name of a room containing other users
 When Eddy updates name of the room Dudes to Pals
 Then Edd sees the room Dudes has a new name Pals
-
-Scenario: Users deletes rooms
-When Bruna deletes the room Gals
-When Ed deletes the room Dudes
-Then the user Bruna sees the room Gals does not exists anymore
-Then the user Ed sees the room Dudes does not exists anymore
