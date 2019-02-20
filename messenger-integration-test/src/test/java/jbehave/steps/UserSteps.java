@@ -6,6 +6,7 @@ import com.messenger.utils.UserRole;
 import context.IntegrationTestContext;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
+import org.jbehave.core.annotations.When;
 import org.junit.Assert;
 import utils.AdminUserCredentials;
 import utils.RandomString;
@@ -33,21 +34,21 @@ public class UserSteps {
         Assert.assertEquals(201, response.getStatus());
     }
 
-    @Given("Rodrigo creates a new user $nameOfUser with role $nameOfRole")
-    public void givenRodrigoCreatesANewUserNameOfUserWithRoleNameOfRole(String nameOfUser, String nameOfRole) {
-        User rodrigo = (User) IntegrationTestContext.get("Rodrigo");
+    @When("$nameOfUser creates a new user $nameOfUser with role $nameOfRole")
+    public void whenNameOfUserCreatesANewUserNameOfUserWithRoleNameOfRole(String nameOfUser, String nameOfUserToUpdate, String nameOfRole) {
+        User rodrigo = (User) IntegrationTestContext.get(nameOfUser);
         CreateUserAction createUserAction = new CreateUserAction(rodrigo.getEmail(), rodrigo.getPassword());
 
         RandomString randomString = new RandomString(10);
         String email = randomString.nextString() + "@email.com";
         String password = randomString.nextString();
 
-        User newUser = new User(nameOfUser, nameOfUser, email, password, UserRole.valueOf(nameOfRole));
+        User newUser = new User(nameOfUserToUpdate, nameOfUserToUpdate, email, password, UserRole.valueOf(nameOfRole));
 
         Response response = createUserAction.create(newUser);
 
         User createdUser = response.readEntity(User.class);
-        IntegrationTestContext.put(nameOfUser, createdUser);
+        IntegrationTestContext.put(nameOfUserToUpdate, createdUser);
 
         Assert.assertNotNull(createdUser.getId());
         Assert.assertEquals(201, response.getStatus());
@@ -75,18 +76,18 @@ public class UserSteps {
         Assert.assertEquals(403, response.getStatus());
     }
 
-    @Given("Rodrigo updates role of $nameOfUser to $nameOfRole")
-    public void givenRodrigoUpdatesRoleOfNameOfUserToNameOfRole(String nameOfUser, String nameOfRole) {
-        User rodrigo = (User) IntegrationTestContext.get("Rodrigo");
+    @When("$nameOfUser updates role of $nameOfUser to $nameOfRole")
+    public void whenNameOfUserUpdatesRoleOfNameOfUserToNameOfRole(String nameOfUser, String nameOfUserToUpdate, String nameOfRole) {
+        User rodrigo = (User) IntegrationTestContext.get(nameOfUser);
         UpdateUserAction updateUserAction = new UpdateUserAction(rodrigo.getEmail(), rodrigo.getPassword());
 
-        User user = (User) IntegrationTestContext.get(nameOfUser);
+        User user = (User) IntegrationTestContext.get(nameOfUserToUpdate);
         user.setUserRole(UserRole.valueOf(nameOfRole));
 
         Response response = updateUserAction.update(user.getId(), user);
 
         User updatedUser = response.readEntity(User.class);
-        IntegrationTestContext.put(nameOfUser, updatedUser);
+        IntegrationTestContext.put(nameOfUserToUpdate, updatedUser);
 
         Assert.assertNotNull(updatedUser.getId());
         Assert.assertEquals(200, response.getStatus());

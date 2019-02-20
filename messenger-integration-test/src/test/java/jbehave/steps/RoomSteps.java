@@ -39,8 +39,8 @@ public class RoomSteps {
         assertEquals(201, response.getStatus());
     }
 
-    @Given("$nameOfUSer creates a new room $nameOfRoom with $namesOfParticipants")
-    public void givenNameOfUSerCreatesANewRoomNameOfRoomWithNamesOfParticipants(String nameOfUSer, String nameOfRoom, List<String> namesOfParticipants) {
+    @When("$nameOfUSer creates a new room $nameOfRoom with $namesOfParticipants")
+    public void whenNameOfUSerCreatesANewRoomNameOfRoomWithNamesOfParticipants(String nameOfUSer, String nameOfRoom, List<String> namesOfParticipants) {
         User user = (User) IntegrationTestContext.get(nameOfUSer);
         List<User> participants = namesOfParticipants.stream().map(u -> (User) IntegrationTestContext.get(u)).collect(Collectors.toList());
         participants.add(0, user);
@@ -96,8 +96,8 @@ public class RoomSteps {
         assertEquals(200, response.getStatus());
     }
 
-    @Given("$nameOfUser updates name of the room $nameOfRoom to $newNameOfRoom")
-    public void givenNameOfUserUpdatesNameOfTheRoomNameOfRoomToNewNameOfRoom(String nameOfUser, String nameOfRoom, String newNameOfRoom) {
+    @When("$nameOfUser updates name of the room $nameOfRoom to $newNameOfRoom")
+    public void whenNameOfUserUpdatesNameOfTheRoomNameOfRoomToNewNameOfRoom(String nameOfUser, String nameOfRoom, String newNameOfRoom) {
         User user = (User) IntegrationTestContext.get(nameOfUser);
 
         UpdateRoomAction updateRoomAction = new UpdateRoomAction(user.getEmail(), user.getPassword());
@@ -148,8 +148,8 @@ public class RoomSteps {
         assertEquals(404, response.getStatus());
     }
 
-    @Given("$nameOfUser has room $nameOfRoom with $participants")
-    public void givenNameOfUserHasRoomNameOfRoomWithParticipants(String nameOfUser, String nameOfRoom, List<String> namesOfParticipants) {
+    @When("$nameOfUser has room $nameOfRoom with $participants")
+    public void whenNameOfUserHasRoomNameOfRoomWithParticipants(String nameOfUser, String nameOfRoom, List<String> namesOfParticipants) {
         User user = (User) IntegrationTestContext.get(nameOfUser);
         Room room = (Room) IntegrationTestContext.get(nameOfRoom);
 
@@ -219,7 +219,7 @@ public class RoomSteps {
         assertEquals(200, response.getStatus());
     }
 
-    @Then("$nameOfUser can fetch $hisher rooms")
+    @Then("the user $nameOfUser can fetch his rooms")
     public void thenNameOfUserCanFetchHisherRooms(String nameOfUser) {
         User user = (User) IntegrationTestContext.get(nameOfUser);
 
