@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface IRoomService {
 
-    void insert(final Room room) throws IllegalArgumentException;
+    Room insert(final Room room) throws IllegalArgumentException;
 
     Room update(final String id, final Room room) throws IllegalArgumentException, RoomNotFoundException;
 

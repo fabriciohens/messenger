@@ -39,11 +39,9 @@ public class UserControllerTest {
     @Test
     public void testCreateUserValidValues() {
         User userToCreate = new User(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), user.getUserRole());
-        doAnswer((Answer<Void>) invocation -> {
-            User user = invocation.getArgument(0);
-            user.setId(id);
-            return null;
-        }).when(userServiceMock).insert(any(User.class));
+        User userToReturn = new User(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), user.getUserRole());
+        userToReturn.setId(id);
+        when(userServiceMock.insert(any(User.class))).thenReturn(userToReturn);
         ResponseEntity actual = controllerToTest.create(userToCreate);
 
         assertEquals(ResponseEntity.status(HttpStatus.CREATED).body(user), actual);

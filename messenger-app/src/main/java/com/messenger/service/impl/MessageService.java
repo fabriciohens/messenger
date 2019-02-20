@@ -29,12 +29,13 @@ public class MessageService implements IMessageService {
     }
 
     @Override
-    public void sendMessage(final Room room, final Message message) {
+    public Message sendMessage(final Room room, final Message message) {
         checkIfMessageIsValid(message);
-        messageRepository.insert(message);
+        Message sentMessage = messageRepository.insert(message);
 
-        room.getMessages().add(message);
+        room.getMessages().add(sentMessage);
         roomRepository.save(room);
+        return sentMessage;
     }
 
     @Override

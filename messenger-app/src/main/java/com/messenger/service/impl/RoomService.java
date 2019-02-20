@@ -24,9 +24,9 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public void insert(final Room room) throws IllegalArgumentException {
+    public Room insert(final Room room) throws IllegalArgumentException {
         this.checkIfRoomIsValid(room);
-        roomRepository.insert(room);
+        return roomRepository.insert(room);
     }
 
     @Override

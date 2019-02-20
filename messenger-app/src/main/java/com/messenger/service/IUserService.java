@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IUserService {
 
-    void insert(final User user) throws IllegalArgumentException;
+    User insert(final User user) throws IllegalArgumentException;
 
     User update(final String id, final User user) throws IllegalArgumentException, UserNotFoundException;
 

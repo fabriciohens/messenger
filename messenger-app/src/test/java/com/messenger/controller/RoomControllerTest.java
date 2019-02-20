@@ -55,13 +55,11 @@ public class RoomControllerTest {
 
     @Test
     public void testCreateRoomValidValues() {
-        Room newRoom = new Room(room.getName(), room.getParticipants());
-        doAnswer((Answer<Void>) invocation -> {
-            Room room = invocation.getArgument(0);
-            room.setId(id);
-            return null;
-        }).when(roomServiceMock).insert(any(Room.class));
-        ResponseEntity actual = controllerToTest.create(newRoom);
+        Room roomToCreate = new Room(room.getName(), room.getParticipants());
+        Room roomToReturn = new Room(room.getName(), room.getParticipants());
+        roomToReturn.setId(id);
+        when(roomServiceMock.insert(any(Room.class))).thenReturn(roomToReturn);
+        ResponseEntity actual = controllerToTest.create(roomToCreate);
         assertEquals(ResponseEntity.status(HttpStatus.CREATED).body(room), actual);
     }
 

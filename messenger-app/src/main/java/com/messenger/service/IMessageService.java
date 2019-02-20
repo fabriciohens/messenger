@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IMessageService {
 
-    void sendMessage(final Room room, final Message message);
+    Message sendMessage(final Room room, final Message message);
 
     List<Message> search(final SearchType searchType, final String searchParam);
 }

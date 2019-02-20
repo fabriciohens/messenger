@@ -18,9 +18,9 @@ public class UserService implements IUserService {
         this.userRepository = repository;
     }
 
-    public void insert(final User user) throws IllegalArgumentException {
+    public User insert(final User user) throws IllegalArgumentException {
         checkIfUserIsValid(user);
-        userRepository.insert(user);
+        return userRepository.insert(user);
     }
 
     public User update(final String id, final User newUser) throws IllegalArgumentException, UserNotFoundException {
