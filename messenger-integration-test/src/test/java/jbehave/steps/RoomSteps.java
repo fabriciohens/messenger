@@ -15,7 +15,6 @@ import utils.RandomString;
 
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,8 +42,8 @@ public class RoomSteps {
     @Given("$nameOfUSer creates a new room $nameOfRoom with $namesOfParticipants")
     public void givenNameOfUSerCreatesANewRoomNameOfRoomWithNamesOfParticipants(String nameOfUSer, String nameOfRoom, List<String> namesOfParticipants) {
         User user = (User) IntegrationTestContext.get(nameOfUSer);
-        List<User> participants = namesOfParticipants.stream().map(u -> (User)IntegrationTestContext.get(u)).collect(Collectors.toList());
-        participants.add(user);
+        List<User> participants = namesOfParticipants.stream().map(u -> (User) IntegrationTestContext.get(u)).collect(Collectors.toList());
+        participants.add(0, user);
 
         CreateRoomAction createRoomAction = new CreateRoomAction(user.getEmail(), user.getPassword());
 
