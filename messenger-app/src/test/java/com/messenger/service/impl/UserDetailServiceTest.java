@@ -16,12 +16,12 @@ import static org.mockito.Mockito.when;
 public class UserDetailServiceTest {
 
     private IUserRepository userRepositoryMock;
-    private UserDetailService serviceToTest;
+    private MyUserDetailsService serviceToTest;
 
     @Before
     public void setUp() {
         this.userRepositoryMock = mock(IUserRepository.class);
-        this.serviceToTest = new UserDetailService(userRepositoryMock);
+        this.serviceToTest = new MyUserDetailsService(userRepositoryMock);
     }
 
     @Test

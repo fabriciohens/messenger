@@ -14,11 +14,11 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class UserDetailService implements UserDetailsService {
+public class MyUserDetailsService implements UserDetailsService {
 
     private final IUserRepository repository;
 
-    public UserDetailService(final IUserRepository repository) {
+    public MyUserDetailsService(final IUserRepository repository) {
         this.repository = repository;
     }
 
