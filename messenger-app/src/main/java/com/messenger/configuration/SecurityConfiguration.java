@@ -29,7 +29,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/rooms/page/*", "/rooms/search").hasAuthority(UserRole.AUDITOR.name())
-                .antMatchers("/users/*").hasAuthority(UserRole.ADMIN.name())
+                .antMatchers("/users", "/users/*").hasAuthority(UserRole.ADMIN.name())
                 .antMatchers("/**").authenticated()
                 .and().httpBasic()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
