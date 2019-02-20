@@ -50,22 +50,22 @@ public class MessageService implements IMessageService {
 
     }
 
-    private List<Message> searchBySender(final String idSender) {
-        Optional<User> sender = userRepository.findById(idSender);
+    private List<Message> searchBySender(final String firstName) {
+        User sender = userRepository.findFirstByFirstName(firstName);
 
-        if (!sender.isPresent())
+        if (sender == null)
             return Collections.emptyList();
 
-        return messageRepository.findAllBySenderEquals(sender.get());
+        return messageRepository.findAllBySenderEquals(sender);
     }
 
-    private List<Message> searchByReceiver(final String idReceiver) {
-        Optional<User> receiver = userRepository.findById(idReceiver);
+    private List<Message> searchByReceiver(final String firstName) {
+        User receiver = userRepository.findFirstByFirstName(firstName);
 
-        if (!receiver.isPresent())
+        if (receiver == null)
             return Collections.emptyList();
 
-        return messageRepository.findAllByReceiversIsContaining(receiver.get());
+        return messageRepository.findAllByReceiversIsContaining(receiver);
     }
 
     private List<Message> searchByContent(final String messageContent) {

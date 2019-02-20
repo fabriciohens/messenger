@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface IUserRepository extends MongoRepository<User, String> {
 
+    User findFirstByFirstName(String firstName);
     User findByEmail(String email);
 
 }
