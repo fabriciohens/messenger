@@ -19,16 +19,27 @@ Examples:
 
 Scenario:
 Given Ed creates a new room Dudes with Edd, Eddy
-Then Ed sees the room Dudes have 2 participants
+Then Ed sees the room Dudes have 3 participants
+Then Ed can fetch his rooms
 
 Scenario:
 Given Bruna creates a new room Gals with Amanda, Liza, Carol
 When Bruna removes Amanda from the room Gals
-Then Bruna sees the room Gals have 4 participants
+Then Bruna sees the room Gals have 3 participants
+Then Bruna can fetch her rooms
+
+Scenario:
+Given Ed has room Dudes with Ed, Edd, Eddy
+When Ed sends a message Hello to Edd, Eddy in room Dudes
+Then Ed message Hello has 2 receivers
+Then Edd, Eddy is able to see the message Hello Ed sent to them in room Dudes
 
 Scenario:
 Given a new user Auditor with role AUDITOR
-Then the Auditor is able to fetche all rooms
+Then Auditor fetches all rooms
+Then Auditor searches rooms by SENDER Ed
+Then Auditor searches rooms by RECEIVER Eddy
+Then Auditor searches rooms by CONTENT Hello
 
 Scenario:
 Given Eddy updates name of the room Dudes to Pals
