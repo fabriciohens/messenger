@@ -79,11 +79,4 @@ public class RoomController {
         return ResponseEntity.status(HttpStatus.OK).body(rooms);
     }
 
-    @PostMapping("/{idRoom}/send-message")
-    public ResponseEntity<Message> sendMessageInRoom(@PathVariable final String idRoom, @RequestBody final Message message) {
-        Room room = roomService.find(idRoom);
-        messageService.sendMessage(room, message);
-        return ResponseEntity.status(HttpStatus.CREATED).body(message);
-    }
-
 }

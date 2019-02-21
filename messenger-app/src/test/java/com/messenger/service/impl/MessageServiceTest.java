@@ -29,7 +29,6 @@ public class MessageServiceTest {
     private IRoomRepository roomRepositoryMock;
     private IMessageService serviceToTest;
 
-    private List<User> participants;
     private Room room;
     private Message message;
     private String id;
@@ -41,7 +40,7 @@ public class MessageServiceTest {
         this.roomRepositoryMock = Mockito.mock(IRoomRepository.class);
         this.serviceToTest = new MessageService(messageRepositoryMock, userRepositoryMock, roomRepositoryMock);
 
-        this.participants = Arrays.asList(
+        List<User> participants = Arrays.asList(
                 new User("FirstName", "LastName", "email@email.com", "secret", UserRole.NORMAL),
                 new User("FirstName", "LastName", "email@email.com", "secret", UserRole.NORMAL)
         );
@@ -55,6 +54,7 @@ public class MessageServiceTest {
 
     @Test
     public void testSendMessage() {
+        doNothing().when(roomRepositoryMock).save(any(Room.class));
         serviceToTest.sendMessage(room, message);
         assertTrue(room.getMessages().size() > 0);
         verify(messageRepositoryMock, times(1)).insert(any(Message.class));

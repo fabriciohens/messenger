@@ -1,5 +1,6 @@
 package com.messenger.service.impl;
 
+import com.messenger.exception.MessageNotFoundException;
 import com.messenger.model.Message;
 import com.messenger.model.Room;
 import com.messenger.model.User;
@@ -36,6 +37,16 @@ public class MessageService implements IMessageService {
         room.getMessages().add(sentMessage);
         roomRepository.save(room);
         return sentMessage;
+    }
+
+    @Override
+    public List<Message> findAll() {
+        return messageRepository.findAll();
+    }
+
+    @Override
+    public Message find(final String id) throws MessageNotFoundException {
+        return messageRepository.findById(id).orElseThrow(() -> new MessageNotFoundException(id));
     }
 
     @Override

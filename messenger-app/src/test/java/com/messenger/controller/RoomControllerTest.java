@@ -108,30 +108,6 @@ public class RoomControllerTest {
     }
 
     @Test
-    public void testSendMessage() {
-        User sender = room.getParticipants().get(0);
-        List<User> receivers = Collections.singletonList(room.getParticipants().get(1));
-        Message newMessage = new Message(sender, receivers, "Hello");
-        Message expectedMessage = new Message(sender, receivers, "Hello");
-        expectedMessage.setId(id);
-
-        when(roomServiceMock.find(anyString())).thenReturn(room);
-        doAnswer(invocationOnMock -> {
-            Room room = invocationOnMock.getArgument(0);
-            Message message = invocationOnMock.getArgument(1);
-            message.setId(id);
-            room.getMessages().add(message);
-            return null;
-        }).when(messageServiceMock).sendMessage(any(Room.class), any(Message.class));
-
-        ResponseEntity expected = ResponseEntity.status(HttpStatus.CREATED).body(expectedMessage);
-        ResponseEntity actual = controllerToTest.sendMessageInRoom(id, newMessage);
-
-        assertEquals(expected, actual);
-        assertTrue(room.getMessages().size() > 0);
-    }
-
-    @Test
     public void testSearch() {
         User sender = room.getParticipants().get(0);
         List<User> receivers = Collections.singletonList(room.getParticipants().get(1));
