@@ -16,7 +16,7 @@ import javax.ws.rs.core.Response;
 public class UserSteps {
 
     @Given("a new user $nameOfUser with role $nameOfRole")
-    public void givenANewUserNameofuserWithRoleNameofrole(String nameOfUser, String nameOfRole) {
+    public void givenANewUserNameOfUserWithRoleNameOfRole(String nameOfUser, String nameOfRole) {
         CreateUserAction createUserAction = new CreateUserAction(AdminUserCredentials.EMAIL, AdminUserCredentials.PASSWORD);
 
         RandomString randomString = new RandomString(10);

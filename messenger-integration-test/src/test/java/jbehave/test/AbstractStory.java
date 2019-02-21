@@ -16,7 +16,9 @@ import static org.jbehave.core.reporters.Format.CONSOLE;
 
 public abstract class AbstractStory extends JUnitStories {
 
-    abstract public String storyName();
+    public abstract String storyName();
+
+    public abstract Object stepInstance();
 
     @Override
     public Configuration configuration() {
@@ -26,8 +28,6 @@ public abstract class AbstractStory extends JUnitStories {
                         .withCodeLocation(codeLocationFromClass(this.getClass()))
                         .withFormats(CONSOLE));
     }
-
-    public abstract Object stepInstance();
 
     @Override
     public InjectableStepsFactory stepsFactory() {
