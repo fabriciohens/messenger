@@ -28,7 +28,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/rooms/page/*", "/rooms/search").hasAuthority(UserRole.AUDITOR.name())
+                .antMatchers("/rooms/page/*", "/rooms/search", "/messages", "/messages/*").hasAuthority(UserRole.AUDITOR.name())
                 .antMatchers("/users", "/users/*").hasAuthority(UserRole.ADMIN.name())
                 .antMatchers("/**").authenticated()
                 .and().httpBasic()
