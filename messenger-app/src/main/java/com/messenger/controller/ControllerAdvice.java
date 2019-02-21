@@ -1,5 +1,6 @@
 package com.messenger.controller;
 
+import com.messenger.exception.MessageNotFoundException;
 import com.messenger.exception.RoomNotFoundException;
 import com.messenger.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,13 @@ public class ControllerAdvice {
     @ExceptionHandler(RoomNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     ResponseEntity<String> roomNotFoundHandler(final RoomNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    }
+
+    @ResponseBody
+    @ExceptionHandler(RoomNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    ResponseEntity<String> messageNotFoundHandler(final MessageNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 

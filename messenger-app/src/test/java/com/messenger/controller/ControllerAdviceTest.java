@@ -1,5 +1,6 @@
 package com.messenger.controller;
 
+import com.messenger.exception.MessageNotFoundException;
 import com.messenger.exception.RoomNotFoundException;
 import com.messenger.exception.UserNotFoundException;
 import org.junit.Before;
@@ -31,6 +32,12 @@ public class ControllerAdviceTest {
     @Test
     public void testRoomNotFoundHandler() {
         String actual = advice.roomNotFoundHandler(new RoomNotFoundException(id)).getBody();
+        assertNotNull(actual);
+    }
+
+    @Test
+    public void testMessageNotFoundHandler() {
+        String actual = advice.messageNotFoundHandler(new MessageNotFoundException(id)).getBody();
         assertNotNull(actual);
     }
 
