@@ -1,13 +1,10 @@
 package com.messenger.controller;
 
-import com.messenger.model.Room;
 import com.messenger.model.User;
-import com.messenger.service.IRoomService;
 import com.messenger.service.IUserService;
 import com.messenger.utils.UserRole;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.stubbing.Answer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -20,7 +17,6 @@ import static org.mockito.Mockito.*;
 public class UserControllerTest {
 
     private IUserService userServiceMock;
-    private IRoomService roomServiceMock;
     private UserController controllerToTest;
     private User user;
     private String id;
@@ -28,8 +24,7 @@ public class UserControllerTest {
     @Before
     public void setUp() {
         this.userServiceMock = mock(IUserService.class);
-        this.roomServiceMock = mock(IRoomService.class);
-        this.controllerToTest = new UserController(userServiceMock, roomServiceMock);
+        this.controllerToTest = new UserController(userServiceMock);
 
         this.id = "000000000000000000000000";
         this.user = new User("Ben", "Joli", "ben@email.com", "secret", UserRole.NORMAL);
@@ -78,14 +73,4 @@ public class UserControllerTest {
         assertEquals(expected, actual);
     }
 
-    @Test
-    public void testGetUsersRooms() {
-        Room room = new Room("RoomName", Collections.singletonList(user));
-        when(userServiceMock.find(id)).thenReturn(user);
-        when(roomServiceMock.findUsersRooms(user)).thenReturn(Collections.singletonList(room));
-
-        ResponseEntity expected = ResponseEntity.status(HttpStatus.OK).body(Collections.singletonList(room));
-        ResponseEntity actual = controllerToTest.findUsersRooms(id);
-        assertEquals(expected, actual);
-    }
 }

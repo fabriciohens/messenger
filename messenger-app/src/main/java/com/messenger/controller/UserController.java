@@ -1,8 +1,6 @@
 package com.messenger.controller;
 
-import com.messenger.model.Room;
 import com.messenger.model.User;
-import com.messenger.service.IRoomService;
 import com.messenger.service.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +13,9 @@ import java.util.List;
 public class UserController {
 
     private final IUserService userService;
-    private final IRoomService roomService;
 
-    public UserController(final IUserService userService, final IRoomService roomService) {
+    public UserController(final IUserService userService) {
         this.userService = userService;
-        this.roomService = roomService;
     }
 
     @PostMapping
@@ -52,10 +48,4 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(users);
     }
 
-    @GetMapping("/{idUser}/rooms")
-    public ResponseEntity<List<Room>> findUsersRooms(@PathVariable final String idUser) {
-        User user = userService.find(idUser);
-        List<Room> rooms = roomService.findUsersRooms(user);
-        return ResponseEntity.status(HttpStatus.OK).body(rooms);
-    }
 }

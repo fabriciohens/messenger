@@ -5,13 +5,12 @@ import com.messenger.model.Room;
 import com.messenger.model.User;
 import com.messenger.service.IMessageService;
 import com.messenger.service.IRoomService;
+import com.messenger.service.IUserService;
 import com.messenger.utils.SearchType;
 import com.messenger.utils.UserRole;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.mockito.internal.matchers.Any;
-import org.mockito.stubbing.Answer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
@@ -30,7 +29,8 @@ import static org.mockito.Mockito.*;
 public class RoomControllerTest {
 
     private IRoomService roomServiceMock;
-    private IMessageService messageService;
+    private IMessageService messageServiceMock;
+    private IUserService userServiceMock;
     private RoomController controllerToTest;
     private Room room;
     private List<User> participants;
@@ -39,8 +39,9 @@ public class RoomControllerTest {
     @Before
     public void setUp() {
         this.roomServiceMock = Mockito.mock(IRoomService.class);
-        this.messageService = Mockito.mock(IMessageService.class);
-        this.controllerToTest = new RoomController(roomServiceMock, messageService);
+        this.messageServiceMock = Mockito.mock(IMessageService.class);
+        this.userServiceMock = Mockito.mock(IUserService.class);
+        this.controllerToTest = new RoomController(roomServiceMock, messageServiceMock, userServiceMock);
 
         this.id = "000000000000000000000000";
         this.participants = Arrays.asList(
@@ -121,7 +122,7 @@ public class RoomControllerTest {
             message.setId(id);
             room.getMessages().add(message);
             return null;
-        }).when(messageService).sendMessage(any(Room.class), any(Message.class));
+        }).when(messageServiceMock).sendMessage(any(Room.class), any(Message.class));
 
         ResponseEntity expected = ResponseEntity.status(HttpStatus.CREATED).body(expectedMessage);
         ResponseEntity actual = controllerToTest.sendMessageInRoom(id, newMessage);
@@ -136,11 +137,22 @@ public class RoomControllerTest {
         List<User> receivers = Collections.singletonList(room.getParticipants().get(1));
         Message newMessage = new Message(sender, receivers, "Hello");
 
-        when(messageService.search(any(SearchType.class), anyString())).thenReturn(Collections.singletonList(newMessage));
+        when(messageServiceMock.search(any(SearchType.class), anyString())).thenReturn(Collections.singletonList(newMessage));
         when(roomServiceMock.findAllByMessages(Collections.singletonList(newMessage))).thenReturn(Collections.singletonList(room));
 
 
         List<Room> actual = controllerToTest.search(SearchType.CONTENT, "Something").getBody();
         assertEquals(Collections.singletonList(room), actual);
+    }
+
+    @Test
+    public void testGetUsersRooms() {
+        User participant = room.getParticipants().get(0);
+        when(userServiceMock.find(id)).thenReturn(participant);
+        when(roomServiceMock.findUsersRooms(participant)).thenReturn(Collections.singletonList(room));
+
+        ResponseEntity expected = ResponseEntity.status(HttpStatus.OK).body(Collections.singletonList(room));
+        ResponseEntity actual = controllerToTest.findUsersRooms(id);
+        assertEquals(expected, actual);
     }
 }

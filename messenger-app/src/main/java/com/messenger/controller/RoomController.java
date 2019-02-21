@@ -2,8 +2,10 @@ package com.messenger.controller;
 
 import com.messenger.model.Message;
 import com.messenger.model.Room;
+import com.messenger.model.User;
 import com.messenger.service.IMessageService;
 import com.messenger.service.IRoomService;
+import com.messenger.service.IUserService;
 import com.messenger.utils.SearchType;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -18,10 +20,12 @@ public class RoomController {
 
     private final IRoomService roomService;
     private final IMessageService messageService;
+    private final IUserService userService;
 
-    public RoomController(final IRoomService roomService, final IMessageService messageService) {
+    public RoomController(final IRoomService roomService, final IMessageService messageService, final IUserService userService) {
         this.roomService = roomService;
         this.messageService = messageService;
+        this.userService = userService;
     }
 
     @PostMapping
@@ -59,10 +63,6 @@ public class RoomController {
         List<Message> messagesFound = messageService.search(searchType, searchParam);
 
         List<Room> roomsFound = roomService.findAllByMessages(messagesFound);
-        /*
-         * return all rooms that match the query
-         * by sender, receiver or message content
-         */
         return ResponseEntity.status(HttpStatus.OK).body(roomsFound);
     }
 
@@ -70,6 +70,13 @@ public class RoomController {
     public ResponseEntity<Room> removeParticipant(@PathVariable final String idRoom, @PathVariable final String idParticipant) {
         Room updateRoom = roomService.removeParticipantFromRoom(idRoom, idParticipant);
         return ResponseEntity.status(HttpStatus.OK).body(updateRoom);
+    }
+
+    @GetMapping("/user/{idUser}")
+    public ResponseEntity<List<Room>> findUsersRooms(@PathVariable final String idUser) {
+        User user = userService.find(idUser);
+        List<Room> rooms = roomService.findUsersRooms(user);
+        return ResponseEntity.status(HttpStatus.OK).body(rooms);
     }
 
     @PostMapping("/{idRoom}/send-message")
