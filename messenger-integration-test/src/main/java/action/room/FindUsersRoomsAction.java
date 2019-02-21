@@ -8,7 +8,7 @@ import javax.ws.rs.core.Response;
 
 public class FindUsersRoomsAction extends ApiClientAction {
 
-    private final String path = "/users";
+    private final String path = "/rooms";
     private final WebTarget webTarget;
 
     public FindUsersRoomsAction(final String username, final String password) {
@@ -18,8 +18,8 @@ public class FindUsersRoomsAction extends ApiClientAction {
 
     public Response findUsersRooms(final String idUser) {
         return webTarget
+                .path("/user")
                 .path(idUser)
-                .path("/rooms")
                 .request()
                 .accept(MediaType.APPLICATION_JSON)
                 .get();
