@@ -21,10 +21,9 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 public class RoomControllerTest {
 
@@ -116,8 +115,7 @@ public class RoomControllerTest {
         when(messageServiceMock.search(any(SearchType.class), anyString())).thenReturn(Collections.singletonList(newMessage));
         when(roomServiceMock.findAllByMessages(Collections.singletonList(newMessage))).thenReturn(Collections.singletonList(room));
 
-
-        List<Room> actual = controllerToTest.search(SearchType.CONTENT, "Something").getBody();
+        List<Room> actual = controllerToTest.search(SearchType.CONTENT, "Hello").getBody();
         assertEquals(Collections.singletonList(room), actual);
     }
 
