@@ -1,5 +1,8 @@
 package jbehave.steps;
 
+import action.message.FindAllMessagesAction;
+import action.message.GetMessageAction;
+import action.message.SendMessageAction;
 import action.room.*;
 import action.user.CreateUserAction;
 import com.messenger.model.Message;
@@ -24,7 +27,8 @@ import static org.junit.Assert.*;
 public class RoomSteps {
 
     @Given("a new user $nameOfUser with role $nameOfRole")
-    public void givenANewUserNameOfUserWithRoleNameOfRole(String nameOfUser, String nameOfRole) {
+    public void givenANewUserNameOfUserWithRoleNameOfRole(final String nameOfUser,
+                                                          final String nameOfRole) {
         CreateUserAction createUserAction = new CreateUserAction(AdminUserCredentials.EMAIL, AdminUserCredentials.PASSWORD);
         RandomString randomString = new RandomString(10);
         String email = randomString.nextString() + "@email.com";
@@ -41,7 +45,9 @@ public class RoomSteps {
     }
 
     @When("$nameOfUSer creates a new room $nameOfRoom with $namesOfParticipants")
-    public void whenNameOfUSerCreatesANewRoomNameOfRoomWithNamesOfParticipants(String nameOfUSer, String nameOfRoom, List<String> namesOfParticipants) {
+    public void whenNameOfUSerCreatesANewRoomNameOfRoomWithNamesOfParticipants(final String nameOfUSer,
+                                                                               final String nameOfRoom,
+                                                                               final List<String> namesOfParticipants) {
         User user = (User) IntegrationTestContext.get(nameOfUSer);
         List<User> participants = namesOfParticipants.stream().map(u -> (User) IntegrationTestContext.get(u)).collect(Collectors.toList());
         participants.add(0, user);
@@ -59,7 +65,9 @@ public class RoomSteps {
     }
 
     @When("$nameOfUser removes $nameOfUserToRemove from the room $nameOfRoom")
-    public void whenNameOfUserRemovesNameOfUserToRemoveFromTheRoomNameOfRoom(String nameOfUser, String nameOfUserToRemove, String nameOfRoom) {
+    public void whenNameOfUserRemovesNameOfUserToRemoveFromTheRoomNameOfRoom(final String nameOfUser,
+                                                                             final String nameOfUserToRemove,
+                                                                             final String nameOfRoom) {
         User user = (User) IntegrationTestContext.get(nameOfUser);
         User userToRemove = (User) IntegrationTestContext.get(nameOfUserToRemove);
         Room room = (Room) IntegrationTestContext.get(nameOfRoom);
@@ -74,7 +82,9 @@ public class RoomSteps {
     }
 
     @Then("$nameOfUser sees the room $nameOfRoom have $numOfParticipants participants")
-    public void thenNameOfUserSeesTheRoomNameOfRoomHaveNumOfParticipantsParticipants(String nameOfUser, String nameOfRoom, int numOfParticipants) {
+    public void thenNameOfUserSeesTheRoomNameOfRoomHaveNumOfParticipantsParticipants(final String nameOfUser,
+                                                                                     final String nameOfRoom,
+                                                                                     final int numOfParticipants) {
         User user = (User) IntegrationTestContext.get(nameOfUser);
         Room room = (Room) IntegrationTestContext.get(nameOfRoom);
 
@@ -87,7 +97,7 @@ public class RoomSteps {
     }
 
     @Then("$nameOfUser fetches all rooms")
-    public void thenNameOfUserFetchesAllRooms(String nameOfUser) {
+    public void thenNameOfUserFetchesAllRooms(final String nameOfUser) {
         User user = (User) IntegrationTestContext.get(nameOfUser);
 
         FindAllRoomsAction findAllRoomsAction = new FindAllRoomsAction(user.getEmail(), user.getPassword());
@@ -98,7 +108,9 @@ public class RoomSteps {
     }
 
     @When("$nameOfUser updates name of the room $nameOfRoom to $newNameOfRoom")
-    public void whenNameOfUserUpdatesNameOfTheRoomNameOfRoomToNewNameOfRoom(String nameOfUser, String nameOfRoom, String newNameOfRoom) {
+    public void whenNameOfUserUpdatesNameOfTheRoomNameOfRoomToNewNameOfRoom(final String nameOfUser,
+                                                                            final String nameOfRoom,
+                                                                            final String newNameOfRoom) {
         User user = (User) IntegrationTestContext.get(nameOfUser);
 
         UpdateRoomAction updateRoomAction = new UpdateRoomAction(user.getEmail(), user.getPassword());
@@ -114,7 +126,9 @@ public class RoomSteps {
     }
 
     @Then("$nameOfUser sees the room $nameOfRoom has a new name $newNameOfRoom")
-    public void thenNameOfUserSeesTheRoomNameOfRoomHasANewNameNewNameOfRoom(String nameOfUser, String nameOfRoom, String newNameOfRoom) {
+    public void thenNameOfUserSeesTheRoomNameOfRoomHasANewNameNewNameOfRoom(final String nameOfUser,
+                                                                            final String nameOfRoom,
+                                                                            final String newNameOfRoom) {
         User user = (User) IntegrationTestContext.get(nameOfUser);
         Room room = (Room) IntegrationTestContext.get(nameOfRoom);
 
@@ -128,7 +142,9 @@ public class RoomSteps {
     }
 
     @When("$nameOfUser has room $nameOfRoom with $participants")
-    public void whenNameOfUserHasRoomNameOfRoomWithParticipants(String nameOfUser, String nameOfRoom, List<String> namesOfParticipants) {
+    public void whenNameOfUserHasRoomNameOfRoomWithParticipants(final String nameOfUser,
+                                                                final String nameOfRoom,
+                                                                final List<String> namesOfParticipants) {
         User user = (User) IntegrationTestContext.get(nameOfUser);
         Room room = (Room) IntegrationTestContext.get(nameOfRoom);
 
@@ -142,14 +158,16 @@ public class RoomSteps {
     }
 
     @When("$nameOfSender sends a message $message to $namesOfReceivers in room $nameOfRoom")
-    public void whenNameOfSenderSendsAMessage$messageToNamesOfReceiversInRoomNameOfRoom(
-            String nameOfSender, String message, List<String> namesOfReceivers, String nameOfRoom) {
+    public void whenNameOfSenderSendsAMessage$messageToNamesOfReceiversInRoomNameOfRoom(final String nameOfSender,
+                                                                                        final String message,
+                                                                                        final List<String> namesOfReceivers,
+                                                                                        final String nameOfRoom) {
         User sender = (User) IntegrationTestContext.get(nameOfSender);
         Room room = (Room) IntegrationTestContext.get(nameOfRoom);
 
         List<User> receivers = namesOfReceivers.stream().map(u -> (User) IntegrationTestContext.get(u)).collect(Collectors.toList());
         Message newMessage = new Message(sender, receivers, message);
-        SendMessageRoomAction action = new SendMessageRoomAction(sender.getEmail(), sender.getPassword());
+        SendMessageAction action = new SendMessageAction(sender.getEmail(), sender.getPassword());
 
         Response response = action.sendMessage(room.getId(), newMessage);
         Message sentMessage = response.readEntity(Message.class);
@@ -160,8 +178,9 @@ public class RoomSteps {
     }
 
     @Then("$nameOfSender message $message has $numOfReceivers receivers")
-    public void thenNameOfSenderMessageMessageHasNumOfReceiversReceivers(
-            String nameOfSender, String message, int numOfReceivers) {
+    public void thenNameOfSenderMessageMessageHasNumOfReceiversReceivers(final String nameOfSender,
+                                                                         final String message,
+                                                                         final int numOfReceivers) {
         User sender = (User) IntegrationTestContext.get(nameOfSender);
         Message sentMessage = (Message) IntegrationTestContext.get(message);
 
@@ -170,8 +189,10 @@ public class RoomSteps {
     }
 
     @Then("$namesOfReceivers is able to see the message $message $nameOfSender sent to them in room $nameOfRoom")
-    public void thenNamesOfReceiversIsAbleToSeeTheMessageMessageNameOfSenderSentToThemInRoomNameOfRoom(
-            List<String> namesOfReceivers, String message, String nameOfSender, String nameOfRoom) {
+    public void thenNamesOfReceiversIsAbleToSeeTheMessageMessageNameOfSenderSentToThemInRoomNameOfRoom(final List<String> namesOfReceivers,
+                                                                                                       final String message,
+                                                                                                       final String nameOfSender,
+                                                                                                       final String nameOfRoom) {
         User sender = (User) IntegrationTestContext.get(nameOfSender);
         Room room = (Room) IntegrationTestContext.get(nameOfRoom);
         Message sentMessage = (Message) IntegrationTestContext.get(message);
@@ -185,8 +206,8 @@ public class RoomSteps {
     }
 
     @Then("$nameOfUser searches rooms by CONTENT $searchParam")
-    public void thenNameOfUserSearchesRoomsByContentSearchParam
-            (String nameOfUser, String searchParam) {
+    public void thenNameOfUserSearchesRoomsByContentSearchParam(final String nameOfUser,
+                                                                final String searchParam) {
         User user = (User) IntegrationTestContext.get(nameOfUser);
 
         SearchRoomAction action = new SearchRoomAction(user.getEmail(), user.getPassword());
@@ -199,8 +220,8 @@ public class RoomSteps {
     }
 
     @Then("$nameOfUser searches rooms by SENDER $searchParam")
-    public void thenNameOfUserSearchesRoomsBySenderSearchParam
-            (String nameOfUser, String searchParam) {
+    public void thenNameOfUserSearchesRoomsBySenderSearchParam(final String nameOfUser,
+                                                               final String searchParam) {
         User user = (User) IntegrationTestContext.get(nameOfUser);
         User userToSearch = (User) IntegrationTestContext.get(searchParam);
 
@@ -214,8 +235,8 @@ public class RoomSteps {
     }
 
     @Then("$nameOfUser searches rooms by RECEIVER $searchParam")
-    public void thenNameOfUserSearchesRoomsByReceiverSearchParam
-            (String nameOfUser, String searchParam) {
+    public void thenNameOfUserSearchesRoomsByReceiverSearchParam(final String nameOfUser,
+                                                                 final String searchParam) {
         User user = (User) IntegrationTestContext.get(nameOfUser);
         User userToSearch = (User) IntegrationTestContext.get(searchParam);
 
@@ -229,7 +250,7 @@ public class RoomSteps {
     }
 
     @Then("the user $nameOfUser can fetch his rooms")
-    public void thenNameOfUserCanFetchHisherRooms(String nameOfUser) {
+    public void thenNameOfUserCanFetchHisherRooms(final String nameOfUser) {
         User user = (User) IntegrationTestContext.get(nameOfUser);
 
         FindUsersRoomsAction action = new FindUsersRoomsAction(user.getEmail(), user.getPassword());
@@ -238,6 +259,60 @@ public class RoomSteps {
         });
 
         assertEquals(1, rooms.size());
+        assertEquals(200, response.getStatus());
+    }
+
+    @Then("$nameOfUser fetches all messages")
+    public void thenNameOfUserFetchesAllMessages(final String nameOfUser) {
+        User user = (User) IntegrationTestContext.get(nameOfUser);
+
+        FindAllMessagesAction action = new FindAllMessagesAction(user.getEmail(), user.getPassword());
+        Response response = action.findAll();
+
+        assertEquals(200, response.getStatus());
+    }
+
+    @Then("$nameOfAuditor fetches message $nameOfMessage")
+    public void thenNameOfAuditorFetchesMessageNameOfMessage(final String nameOfAuditor,
+                                                             final String nameOfMessage) {
+        User auditor = (User) IntegrationTestContext.get(nameOfAuditor);
+        Message message = (Message) IntegrationTestContext.get(nameOfMessage);
+
+        GetMessageAction action = new GetMessageAction(auditor.getEmail(), auditor.getPassword());
+        Response response = action.get(message.getId());
+        Message returnedMessage = response.readEntity(Message.class);
+
+        assertEquals(nameOfMessage, returnedMessage.getContent());
+        assertEquals(200, response.getStatus());
+    }
+
+    @Then("$nameOfAuditor sees $nameOfSender sent message $nameOfMessage")
+    public void thenNameOfAuditorSeesNameOfSenderSentMessageNameOfMessage(final String nameOfAuditor,
+                                                                          final String nameOfSender,
+                                                                          final String nameOfMessage) {
+        User auditor = (User) IntegrationTestContext.get(nameOfAuditor);
+        Message message = (Message) IntegrationTestContext.get(nameOfMessage);
+
+        GetMessageAction action = new GetMessageAction(auditor.getEmail(), auditor.getPassword());
+        Response response = action.get(message.getId());
+        Message returnedMessage = response.readEntity(Message.class);
+
+        assertEquals(nameOfSender, returnedMessage.getSender().getFirstName());
+        assertEquals(200, response.getStatus());
+    }
+
+    @Then("$nameOfAuditor sees $namesOfReceivers received message $nameOfMessage")
+    public void thenNameOfAuditorSeesNamesOfReceiversReceivedMessageNameOfMessage(final String nameOfAuditor,
+                                                                                  final List<String> namesOfReceivers,
+                                                                                  final String nameOfMessage) {
+        User auditor = (User) IntegrationTestContext.get(nameOfAuditor);
+        Message message = (Message) IntegrationTestContext.get(nameOfMessage);
+
+        GetMessageAction action = new GetMessageAction(auditor.getEmail(), auditor.getPassword());
+        Response response = action.get(message.getId());
+        Message returnedMessage = response.readEntity(Message.class);
+
+        assertArrayEquals(namesOfReceivers.toArray(), returnedMessage.getReceivers().stream().map(User::getFirstName).toArray());
         assertEquals(200, response.getStatus());
     }
 }
