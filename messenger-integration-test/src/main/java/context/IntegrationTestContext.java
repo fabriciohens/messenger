@@ -11,8 +11,11 @@ public class IntegrationTestContext {
         context = new HashMap<>();
     }
 
-    public static Object put(String key, Object o) {
-        return context.put(key, o);
+    public static void put(String key, Object o) {
+        if (context.containsKey(key)) {
+            throw new IllegalArgumentException("There is already a object in the context with key: " + key);
+        }
+        context.put(key, o);
     }
 
     public static Object get(String key) {
