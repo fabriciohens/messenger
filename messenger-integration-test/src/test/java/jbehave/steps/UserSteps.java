@@ -28,7 +28,7 @@ public class UserSteps {
 
         Response response = action.create(newUser);
         User createdUser = response.readEntity(User.class);
-        IntegrationTestContext.put(nameOfUser, createdUser);
+        IntegrationTestContext.putNewObject(nameOfUser, createdUser);
 
         Assert.assertNotNull(createdUser.getId());
         Assert.assertEquals(201, response.getStatus());
@@ -38,13 +38,13 @@ public class UserSteps {
     public void whenNameOfUserCreatesANewUserNameOfUserWithRoleNameOfRole(final String nameOfUser,
                                                                           final String nameOfUserToUpdate,
                                                                           final String nameOfRole) {
-        User rodrigo = (User) IntegrationTestContext.get(nameOfUser);
+        User rodrigo = (User) IntegrationTestContext.getObject(nameOfUser);
         User newUser = new User(nameOfUserToUpdate, nameOfUserToUpdate, generateEmail(), generatePassword(), UserRole.valueOf(nameOfRole));
 
         CreateUserAction createUserAction = new CreateUserAction(rodrigo.getEmail(), rodrigo.getPassword());
         Response response = createUserAction.create(newUser);
         User createdUser = response.readEntity(User.class);
-        IntegrationTestContext.put(nameOfUserToUpdate, createdUser);
+        IntegrationTestContext.putNewObject(nameOfUserToUpdate, createdUser);
 
         Assert.assertNotNull(createdUser.getId());
         Assert.assertEquals(201, response.getStatus());
@@ -60,7 +60,7 @@ public class UserSteps {
 
     @Then("$nameOfUser is able to fetch all users")
     public void thenNameOfUserIsAbleToFetchAllUsers(final String nameOfUser) {
-        User user = (User) IntegrationTestContext.get(nameOfUser);
+        User user = (User) IntegrationTestContext.getObject(nameOfUser);
         FindAllUserAction action = new FindAllUserAction(user.getEmail(), user.getPassword());
         Response response = action.findAll();
         Assert.assertEquals(200, response.getStatus());
@@ -68,7 +68,7 @@ public class UserSteps {
 
     @Then("$nameOfUser is unable to fetch all users")
     public void thenNameOfUserIsUnableToFetchAllUsers(final String nameOfUser) {
-        User user = (User) IntegrationTestContext.get(nameOfUser);
+        User user = (User) IntegrationTestContext.getObject(nameOfUser);
         FindAllUserAction action = new FindAllUserAction(user.getEmail(), user.getPassword());
         Response response = action.findAll();
         Assert.assertEquals(403, response.getStatus());
@@ -78,16 +78,16 @@ public class UserSteps {
     public void whenNameOfUserUpdatesRoleOfNameOfUserToNameOfRole(final String nameOfUser,
                                                                   final String nameOfUserToUpdate,
                                                                   final String nameOfRole) {
-        User rodrigo = (User) IntegrationTestContext.get(nameOfUser);
+        User rodrigo = (User) IntegrationTestContext.getObject(nameOfUser);
         UpdateUserAction action = new UpdateUserAction(rodrigo.getEmail(), rodrigo.getPassword());
 
-        User user = (User) IntegrationTestContext.get(nameOfUserToUpdate);
+        User user = (User) IntegrationTestContext.getObject(nameOfUserToUpdate);
         user.setUserRole(UserRole.valueOf(nameOfRole));
 
         Response response = action.update(user.getId(), user);
 
         User updatedUser = response.readEntity(User.class);
-        IntegrationTestContext.put(nameOfUserToUpdate, updatedUser);
+        IntegrationTestContext.updateObject(nameOfUserToUpdate, updatedUser);
 
         Assert.assertNotNull(updatedUser.getId());
         Assert.assertEquals(200, response.getStatus());
@@ -96,10 +96,10 @@ public class UserSteps {
     @Then("$nameOfUser is able to fetch user $nameOfUserToFetch")
     public void thenNameOfUserIsAbleToFetchUserNameOfUserToFetch(final String nameOfUser,
                                                                  final String nameOfUserToFetch) {
-        User user = (User) IntegrationTestContext.get(nameOfUser);
+        User user = (User) IntegrationTestContext.getObject(nameOfUser);
         GetUserAction action = new GetUserAction(user.getEmail(), user.getPassword());
 
-        User userToFetch = (User) IntegrationTestContext.get(nameOfUserToFetch);
+        User userToFetch = (User) IntegrationTestContext.getObject(nameOfUserToFetch);
         Response response = action.get(userToFetch.getId());
         User returnedUser = response.readEntity(User.class);
 

@@ -38,7 +38,7 @@ public class RoomSteps {
 
         Response response = createUserAction.create(newUser);
         User createdUser = response.readEntity(User.class);
-        IntegrationTestContext.put(nameOfUser, createdUser);
+        IntegrationTestContext.putNewObject(nameOfUser, createdUser);
 
         assertNotNull(createdUser.getId());
         assertEquals(201, response.getStatus());
@@ -48,8 +48,8 @@ public class RoomSteps {
     public void whenNameOfUSerCreatesANewRoomNameOfRoomWithNamesOfParticipants(final String nameOfUSer,
                                                                                final String nameOfRoom,
                                                                                final List<String> namesOfParticipants) {
-        User user = (User) IntegrationTestContext.get(nameOfUSer);
-        List<User> participants = namesOfParticipants.stream().map(u -> (User) IntegrationTestContext.get(u)).collect(Collectors.toList());
+        User user = (User) IntegrationTestContext.getObject(nameOfUSer);
+        List<User> participants = namesOfParticipants.stream().map(u -> (User) IntegrationTestContext.getObject(u)).collect(Collectors.toList());
         participants.add(0, user);
 
         CreateRoomAction createRoomAction = new CreateRoomAction(user.getEmail(), user.getPassword());
@@ -58,7 +58,7 @@ public class RoomSteps {
 
         Response response = createRoomAction.create(room);
         Room createdRoom = response.readEntity(Room.class);
-        IntegrationTestContext.put(nameOfRoom, createdRoom);
+        IntegrationTestContext.putNewObject(nameOfRoom, createdRoom);
 
         assertNotNull(createdRoom.getId());
         assertEquals(201, response.getStatus());
@@ -68,14 +68,14 @@ public class RoomSteps {
     public void whenNameOfUserRemovesNameOfUserToRemoveFromTheRoomNameOfRoom(final String nameOfUser,
                                                                              final String nameOfUserToRemove,
                                                                              final String nameOfRoom) {
-        User user = (User) IntegrationTestContext.get(nameOfUser);
-        User userToRemove = (User) IntegrationTestContext.get(nameOfUserToRemove);
-        Room room = (Room) IntegrationTestContext.get(nameOfRoom);
+        User user = (User) IntegrationTestContext.getObject(nameOfUser);
+        User userToRemove = (User) IntegrationTestContext.getObject(nameOfUserToRemove);
+        Room room = (Room) IntegrationTestContext.getObject(nameOfRoom);
 
         RemoveParticipantRoomAction action = new RemoveParticipantRoomAction(user.getEmail(), user.getPassword());
         Response response = action.removeParticipant(room.getId(), userToRemove.getId());
         Room returnedRoom = response.readEntity(Room.class);
-        IntegrationTestContext.put(nameOfRoom, returnedRoom);
+        IntegrationTestContext.putNewObject(nameOfRoom, returnedRoom);
 
         assertNotNull(returnedRoom.getId());
         assertEquals(200, response.getStatus());
@@ -85,8 +85,8 @@ public class RoomSteps {
     public void thenNameOfUserSeesTheRoomNameOfRoomHaveNumOfParticipantsParticipants(final String nameOfUser,
                                                                                      final String nameOfRoom,
                                                                                      final int numOfParticipants) {
-        User user = (User) IntegrationTestContext.get(nameOfUser);
-        Room room = (Room) IntegrationTestContext.get(nameOfRoom);
+        User user = (User) IntegrationTestContext.getObject(nameOfUser);
+        Room room = (Room) IntegrationTestContext.getObject(nameOfRoom);
 
         GetRoomAction getRoomAction = new GetRoomAction(user.getEmail(), user.getPassword());
         Response response = getRoomAction.get(room.getId());
@@ -98,7 +98,7 @@ public class RoomSteps {
 
     @Then("$nameOfUser fetches all rooms")
     public void thenNameOfUserFetchesAllRooms(final String nameOfUser) {
-        User user = (User) IntegrationTestContext.get(nameOfUser);
+        User user = (User) IntegrationTestContext.getObject(nameOfUser);
 
         FindAllRoomsAction findAllRoomsAction = new FindAllRoomsAction(user.getEmail(), user.getPassword());
         int page = 0;
@@ -111,16 +111,16 @@ public class RoomSteps {
     public void whenNameOfUserUpdatesNameOfTheRoomNameOfRoomToNewNameOfRoom(final String nameOfUser,
                                                                             final String nameOfRoom,
                                                                             final String newNameOfRoom) {
-        User user = (User) IntegrationTestContext.get(nameOfUser);
+        User user = (User) IntegrationTestContext.getObject(nameOfUser);
 
         UpdateRoomAction updateRoomAction = new UpdateRoomAction(user.getEmail(), user.getPassword());
 
-        Room room = (Room) IntegrationTestContext.get(nameOfRoom);
+        Room room = (Room) IntegrationTestContext.getObject(nameOfRoom);
         room.setName(newNameOfRoom);
 
         Response response = updateRoomAction.update(room.getId(), room);
         Room returnedRoom = response.readEntity(Room.class);
-        IntegrationTestContext.put(nameOfRoom, returnedRoom);
+        IntegrationTestContext.updateObject(nameOfRoom, returnedRoom);
 
         assertEquals(200, response.getStatus());
     }
@@ -129,8 +129,8 @@ public class RoomSteps {
     public void thenNameOfUserSeesTheRoomNameOfRoomHasANewNameNewNameOfRoom(final String nameOfUser,
                                                                             final String nameOfRoom,
                                                                             final String newNameOfRoom) {
-        User user = (User) IntegrationTestContext.get(nameOfUser);
-        Room room = (Room) IntegrationTestContext.get(nameOfRoom);
+        User user = (User) IntegrationTestContext.getObject(nameOfUser);
+        Room room = (Room) IntegrationTestContext.getObject(nameOfRoom);
 
         GetRoomAction getRoomAction = new GetRoomAction(user.getEmail(), user.getPassword());
 
@@ -145,8 +145,8 @@ public class RoomSteps {
     public void whenNameOfUserHasRoomNameOfRoomWithParticipants(final String nameOfUser,
                                                                 final String nameOfRoom,
                                                                 final List<String> namesOfParticipants) {
-        User user = (User) IntegrationTestContext.get(nameOfUser);
-        Room room = (Room) IntegrationTestContext.get(nameOfRoom);
+        User user = (User) IntegrationTestContext.getObject(nameOfUser);
+        Room room = (Room) IntegrationTestContext.getObject(nameOfRoom);
 
         GetRoomAction getRoomAction = new GetRoomAction(user.getEmail(), user.getPassword());
 
@@ -162,16 +162,16 @@ public class RoomSteps {
                                                                                         final String message,
                                                                                         final List<String> namesOfReceivers,
                                                                                         final String nameOfRoom) {
-        User sender = (User) IntegrationTestContext.get(nameOfSender);
-        Room room = (Room) IntegrationTestContext.get(nameOfRoom);
+        User sender = (User) IntegrationTestContext.getObject(nameOfSender);
+        Room room = (Room) IntegrationTestContext.getObject(nameOfRoom);
 
-        List<User> receivers = namesOfReceivers.stream().map(u -> (User) IntegrationTestContext.get(u)).collect(Collectors.toList());
+        List<User> receivers = namesOfReceivers.stream().map(u -> (User) IntegrationTestContext.getObject(u)).collect(Collectors.toList());
         Message newMessage = new Message(sender, receivers, message);
         SendMessageAction action = new SendMessageAction(sender.getEmail(), sender.getPassword());
 
         Response response = action.sendMessage(room.getId(), newMessage);
         Message sentMessage = response.readEntity(Message.class);
-        IntegrationTestContext.put(message, sentMessage);
+        IntegrationTestContext.putNewObject(message, sentMessage);
 
         assertNotNull(sentMessage.getId());
         assertEquals(201, response.getStatus());
@@ -181,8 +181,8 @@ public class RoomSteps {
     public void thenNameOfSenderMessageMessageHasNumOfReceiversReceivers(final String nameOfSender,
                                                                          final String message,
                                                                          final int numOfReceivers) {
-        User sender = (User) IntegrationTestContext.get(nameOfSender);
-        Message sentMessage = (Message) IntegrationTestContext.get(message);
+        User sender = (User) IntegrationTestContext.getObject(nameOfSender);
+        Message sentMessage = (Message) IntegrationTestContext.getObject(message);
 
         assertEquals(sender.getId(), sentMessage.getSender().getId());
         assertEquals(numOfReceivers, sentMessage.getReceivers().size());
@@ -193,9 +193,9 @@ public class RoomSteps {
                                                                                                        final String message,
                                                                                                        final String nameOfSender,
                                                                                                        final String nameOfRoom) {
-        User sender = (User) IntegrationTestContext.get(nameOfSender);
-        Room room = (Room) IntegrationTestContext.get(nameOfRoom);
-        Message sentMessage = (Message) IntegrationTestContext.get(message);
+        User sender = (User) IntegrationTestContext.getObject(nameOfSender);
+        Room room = (Room) IntegrationTestContext.getObject(nameOfRoom);
+        Message sentMessage = (Message) IntegrationTestContext.getObject(message);
 
         GetRoomAction getRoomAction = new GetRoomAction(sender.getEmail(), sender.getPassword());
         Room returnedRoom = getRoomAction.get(room.getId()).readEntity(Room.class);
@@ -208,7 +208,7 @@ public class RoomSteps {
     @Then("$nameOfUser searches rooms by CONTENT $searchParam")
     public void thenNameOfUserSearchesRoomsByContentSearchParam(final String nameOfUser,
                                                                 final String searchParam) {
-        User user = (User) IntegrationTestContext.get(nameOfUser);
+        User user = (User) IntegrationTestContext.getObject(nameOfUser);
 
         SearchRoomAction action = new SearchRoomAction(user.getEmail(), user.getPassword());
         Response response = action.searchRoom(SearchType.CONTENT, searchParam);
@@ -222,8 +222,8 @@ public class RoomSteps {
     @Then("$nameOfUser searches rooms by SENDER $searchParam")
     public void thenNameOfUserSearchesRoomsBySenderSearchParam(final String nameOfUser,
                                                                final String searchParam) {
-        User user = (User) IntegrationTestContext.get(nameOfUser);
-        User userToSearch = (User) IntegrationTestContext.get(searchParam);
+        User user = (User) IntegrationTestContext.getObject(nameOfUser);
+        User userToSearch = (User) IntegrationTestContext.getObject(searchParam);
 
         SearchRoomAction action = new SearchRoomAction(user.getEmail(), user.getPassword());
         Response response = action.searchRoom(SearchType.SENDER, userToSearch.getId());
@@ -237,8 +237,8 @@ public class RoomSteps {
     @Then("$nameOfUser searches rooms by RECEIVER $searchParam")
     public void thenNameOfUserSearchesRoomsByReceiverSearchParam(final String nameOfUser,
                                                                  final String searchParam) {
-        User user = (User) IntegrationTestContext.get(nameOfUser);
-        User userToSearch = (User) IntegrationTestContext.get(searchParam);
+        User user = (User) IntegrationTestContext.getObject(nameOfUser);
+        User userToSearch = (User) IntegrationTestContext.getObject(searchParam);
 
         SearchRoomAction action = new SearchRoomAction(user.getEmail(), user.getPassword());
         Response response = action.searchRoom(SearchType.RECEIVER, userToSearch.getId());
@@ -251,7 +251,7 @@ public class RoomSteps {
 
     @Then("the user $nameOfUser can fetch his rooms")
     public void thenNameOfUserCanFetchHisherRooms(final String nameOfUser) {
-        User user = (User) IntegrationTestContext.get(nameOfUser);
+        User user = (User) IntegrationTestContext.getObject(nameOfUser);
 
         FindUsersRoomsAction action = new FindUsersRoomsAction(user.getEmail(), user.getPassword());
         Response response = action.findUsersRooms(user.getId());
@@ -264,7 +264,7 @@ public class RoomSteps {
 
     @Then("$nameOfUser fetches all messages")
     public void thenNameOfUserFetchesAllMessages(final String nameOfUser) {
-        User user = (User) IntegrationTestContext.get(nameOfUser);
+        User user = (User) IntegrationTestContext.getObject(nameOfUser);
 
         FindAllMessagesAction action = new FindAllMessagesAction(user.getEmail(), user.getPassword());
         Response response = action.findAll();
@@ -275,8 +275,8 @@ public class RoomSteps {
     @Then("$nameOfAuditor fetches message $nameOfMessage")
     public void thenNameOfAuditorFetchesMessageNameOfMessage(final String nameOfAuditor,
                                                              final String nameOfMessage) {
-        User auditor = (User) IntegrationTestContext.get(nameOfAuditor);
-        Message message = (Message) IntegrationTestContext.get(nameOfMessage);
+        User auditor = (User) IntegrationTestContext.getObject(nameOfAuditor);
+        Message message = (Message) IntegrationTestContext.getObject(nameOfMessage);
 
         GetMessageAction action = new GetMessageAction(auditor.getEmail(), auditor.getPassword());
         Response response = action.get(message.getId());
@@ -290,8 +290,8 @@ public class RoomSteps {
     public void thenNameOfAuditorSeesNameOfSenderSentMessageNameOfMessage(final String nameOfAuditor,
                                                                           final String nameOfSender,
                                                                           final String nameOfMessage) {
-        User auditor = (User) IntegrationTestContext.get(nameOfAuditor);
-        Message message = (Message) IntegrationTestContext.get(nameOfMessage);
+        User auditor = (User) IntegrationTestContext.getObject(nameOfAuditor);
+        Message message = (Message) IntegrationTestContext.getObject(nameOfMessage);
 
         GetMessageAction action = new GetMessageAction(auditor.getEmail(), auditor.getPassword());
         Response response = action.get(message.getId());
@@ -305,8 +305,8 @@ public class RoomSteps {
     public void thenNameOfAuditorSeesNamesOfReceiversReceivedMessageNameOfMessage(final String nameOfAuditor,
                                                                                   final List<String> namesOfReceivers,
                                                                                   final String nameOfMessage) {
-        User auditor = (User) IntegrationTestContext.get(nameOfAuditor);
-        Message message = (Message) IntegrationTestContext.get(nameOfMessage);
+        User auditor = (User) IntegrationTestContext.getObject(nameOfAuditor);
+        Message message = (Message) IntegrationTestContext.getObject(nameOfMessage);
 
         GetMessageAction action = new GetMessageAction(auditor.getEmail(), auditor.getPassword());
         Response response = action.get(message.getId());
