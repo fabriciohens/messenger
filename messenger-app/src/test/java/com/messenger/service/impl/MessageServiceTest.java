@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -54,10 +55,24 @@ public class MessageServiceTest {
 
     @Test
     public void testSendMessage() {
-        doNothing().when(roomRepositoryMock).save(any(Room.class));
         serviceToTest.sendMessage(room, message);
         assertTrue(room.getMessages().size() > 0);
         verify(messageRepositoryMock, times(1)).insert(any(Message.class));
+    }
+
+    @Test
+    public void testFind() {
+        when(messageRepositoryMock.findById(anyString())).thenReturn(Optional.of(message));
+        Message actual = serviceToTest.find(id);
+        assertEquals(message, actual);
+    }
+
+    @Test
+    public void testFindAll() {
+        List<Message> mockReturn = Collections.singletonList(message);
+        when(messageRepositoryMock.findAll()).thenReturn(mockReturn);
+        List<Message> actual = serviceToTest.findAll();
+        assertEquals(mockReturn, actual);
     }
 
     @Test(expected = IllegalArgumentException.class)
