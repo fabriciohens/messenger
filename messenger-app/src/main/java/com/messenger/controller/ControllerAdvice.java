@@ -28,7 +28,7 @@ public class ControllerAdvice {
     }
 
     @ResponseBody
-    @ExceptionHandler(RoomNotFoundException.class)
+    @ExceptionHandler(MessageNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     ResponseEntity<String> messageNotFoundHandler(final MessageNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
