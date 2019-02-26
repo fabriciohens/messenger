@@ -1,7 +1,7 @@
 package com.messenger.service.impl;
 
 import com.messenger.model.User;
-import com.messenger.repository.IUserRepository;
+import com.messenger.repository.UserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,11 +15,11 @@ import java.util.List;
 import static java.util.Arrays.asList;
 
 @Service
-public class MyUserDetailsService implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final IUserRepository userRepository;
+    private final UserRepository userRepository;
 
-    public MyUserDetailsService(final IUserRepository userRepository) {
+    public UserDetailsServiceImpl(final UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

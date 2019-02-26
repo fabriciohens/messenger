@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-public interface IRoomService {
+public interface RoomService {
 
     Room insert(final Room room) throws IllegalArgumentException;
 

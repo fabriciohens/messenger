@@ -3,8 +3,8 @@ package com.messenger.controller;
 import com.messenger.model.Message;
 import com.messenger.model.Room;
 import com.messenger.model.User;
-import com.messenger.service.IMessageService;
-import com.messenger.service.IRoomService;
+import com.messenger.service.MessageService;
+import com.messenger.service.RoomService;
 import com.messenger.utils.UserRole;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,8 +24,8 @@ import static org.mockito.Mockito.when;
 
 public class MessageControllerTest {
 
-    private IRoomService roomServiceMock;
-    private IMessageService messageServiceMock;
+    private RoomService roomServiceMock;
+    private MessageService messageServiceMock;
     private MessageController controllerToTest;
     private Message message;
     private User sender;
@@ -34,8 +34,8 @@ public class MessageControllerTest {
 
     @Before
     public void setUp() {
-        this.roomServiceMock = Mockito.mock(IRoomService.class);
-        this.messageServiceMock = Mockito.mock(IMessageService.class);
+        this.roomServiceMock = Mockito.mock(RoomService.class);
+        this.messageServiceMock = Mockito.mock(MessageService.class);
         this.controllerToTest = new MessageController(roomServiceMock, messageServiceMock);
 
         this.id = "000000000000000000000000";

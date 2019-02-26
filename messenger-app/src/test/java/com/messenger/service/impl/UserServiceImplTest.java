@@ -2,8 +2,8 @@ package com.messenger.service.impl;
 
 import com.messenger.exception.UserNotFoundException;
 import com.messenger.model.User;
-import com.messenger.repository.IUserRepository;
-import com.messenger.service.IUserService;
+import com.messenger.repository.UserRepository;
+import com.messenger.service.UserService;
 import com.messenger.utils.UserRole;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,18 +17,18 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 
-public class UserServiceTest {
+public class UserServiceImplTest {
 
-    private IUserRepository userRepositoryMock;
-    private IUserService serviceToTest;
+    private UserRepository userRepositoryMock;
+    private UserService serviceToTest;
 
     private String id;
     private User user;
 
     @Before
     public void setUp() {
-        this.userRepositoryMock = mock(IUserRepository.class);
-        this.serviceToTest = new UserService(userRepositoryMock);
+        this.userRepositoryMock = mock(UserRepository.class);
+        this.serviceToTest = new UserServiceImpl(userRepositoryMock);
 
         this.id = "000000000000000000000000";
         this.user = new User("Ben", "Joli", "ben@email.com", "secret", UserRole.NORMAL);

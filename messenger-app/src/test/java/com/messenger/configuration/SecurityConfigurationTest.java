@@ -1,6 +1,6 @@
 package com.messenger.configuration;
 
-import com.messenger.service.impl.MyUserDetailsService;
+import com.messenger.service.impl.UserDetailsServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -10,12 +10,12 @@ import static org.mockito.Mockito.*;
 
 public class SecurityConfigurationTest {
 
-    private MyUserDetailsService userDetailServiceMock;
+    private UserDetailsServiceImpl userDetailServiceMock;
     private SecurityConfiguration configToTest;
 
     @Before
     public void setUp() {
-        this.userDetailServiceMock = mock(MyUserDetailsService.class);
+        this.userDetailServiceMock = mock(UserDetailsServiceImpl.class);
         this.configToTest = new SecurityConfiguration(userDetailServiceMock);
     }
 

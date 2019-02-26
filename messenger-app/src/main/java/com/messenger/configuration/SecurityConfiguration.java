@@ -1,6 +1,6 @@
 package com.messenger.configuration;
 
-import com.messenger.service.impl.MyUserDetailsService;
+import com.messenger.service.impl.UserDetailsServiceImpl;
 import com.messenger.utils.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -18,9 +18,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableConfigurationProperties
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final MyUserDetailsService userDetailService;
+    private final UserDetailsServiceImpl userDetailService;
 
-    public SecurityConfiguration(final MyUserDetailsService userDetailService) {
+    public SecurityConfiguration(final UserDetailsServiceImpl userDetailService) {
         this.userDetailService = userDetailService;
     }
 

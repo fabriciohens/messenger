@@ -2,19 +2,19 @@ package com.messenger.service.impl;
 
 import com.messenger.exception.UserNotFoundException;
 import com.messenger.model.User;
-import com.messenger.repository.IUserRepository;
-import com.messenger.service.IUserService;
+import com.messenger.repository.UserRepository;
+import com.messenger.service.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UserService implements IUserService {
+public class UserServiceImpl implements UserService {
 
-    private final IUserRepository userRepository;
+    private final UserRepository userRepository;
 
-    public UserService(final IUserRepository repository) {
+    public UserServiceImpl(final UserRepository repository) {
         this.userRepository = repository;
     }
 

@@ -2,8 +2,8 @@ package com.messenger.controller;
 
 import com.messenger.model.Message;
 import com.messenger.model.Room;
-import com.messenger.service.IMessageService;
-import com.messenger.service.IRoomService;
+import com.messenger.service.MessageService;
+import com.messenger.service.RoomService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +14,10 @@ import java.util.List;
 @RequestMapping("/messages")
 public class MessageController {
 
-    private final IRoomService roomService;
-    private final IMessageService messageService;
+    private final RoomService roomService;
+    private final MessageService messageService;
 
-    public MessageController(final IRoomService roomService, final IMessageService messageService) {
+    public MessageController(final RoomService roomService, final MessageService messageService) {
         this.roomService = roomService;
         this.messageService = messageService;
     }

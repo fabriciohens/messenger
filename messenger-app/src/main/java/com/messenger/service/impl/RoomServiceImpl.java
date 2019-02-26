@@ -4,8 +4,8 @@ import com.messenger.exception.RoomNotFoundException;
 import com.messenger.model.Message;
 import com.messenger.model.Room;
 import com.messenger.model.User;
-import com.messenger.repository.IRoomRepository;
-import com.messenger.service.IRoomService;
+import com.messenger.repository.RoomRepository;
+import com.messenger.service.RoomService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,11 +15,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class RoomService implements IRoomService {
+public class RoomServiceImpl implements RoomService {
 
-    private final IRoomRepository roomRepository;
+    private final RoomRepository roomRepository;
 
-    public RoomService(final IRoomRepository roomRepository) {
+    public RoomServiceImpl(final RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
     }
 

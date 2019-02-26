@@ -4,10 +4,10 @@ import com.messenger.exception.MessageNotFoundException;
 import com.messenger.model.Message;
 import com.messenger.model.Room;
 import com.messenger.model.User;
-import com.messenger.repository.IMessageRepository;
-import com.messenger.repository.IRoomRepository;
-import com.messenger.repository.IUserRepository;
-import com.messenger.service.IMessageService;
+import com.messenger.repository.MessageRepository;
+import com.messenger.repository.RoomRepository;
+import com.messenger.repository.UserRepository;
+import com.messenger.service.MessageService;
 import com.messenger.utils.SearchType;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
@@ -17,13 +17,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class MessageService implements IMessageService {
+public class MessageServiceImpl implements MessageService {
 
-    private final IMessageRepository messageRepository;
-    private final IUserRepository userRepository;
-    private final IRoomRepository roomRepository;
+    private final MessageRepository messageRepository;
+    private final UserRepository userRepository;
+    private final RoomRepository roomRepository;
 
-    public MessageService(final IMessageRepository messageRepository, final IUserRepository userRepository, final IRoomRepository roomRepository) {
+    public MessageServiceImpl(final MessageRepository messageRepository, final UserRepository userRepository, final RoomRepository roomRepository) {
         this.messageRepository = messageRepository;
         this.userRepository = userRepository;
         this.roomRepository = roomRepository;

@@ -4,8 +4,8 @@ import com.messenger.exception.RoomNotFoundException;
 import com.messenger.model.Message;
 import com.messenger.model.Room;
 import com.messenger.model.User;
-import com.messenger.repository.IRoomRepository;
-import com.messenger.service.IRoomService;
+import com.messenger.repository.RoomRepository;
+import com.messenger.service.RoomService;
 import com.messenger.utils.UserRole;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,10 +21,10 @@ import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-public class RoomServiceTest {
+public class RoomServiceImplTest {
 
-    private IRoomRepository roomRepositoryMock;
-    private IRoomService serviceToTest;
+    private RoomRepository roomRepositoryMock;
+    private RoomService serviceToTest;
 
     private Room room;
     private List<User> participants;
@@ -32,8 +32,8 @@ public class RoomServiceTest {
 
     @Before
     public void setUp() {
-        this.roomRepositoryMock = Mockito.mock(IRoomRepository.class);
-        this.serviceToTest = new RoomService(roomRepositoryMock);
+        this.roomRepositoryMock = Mockito.mock(RoomRepository.class);
+        this.serviceToTest = new RoomServiceImpl(roomRepositoryMock);
 
         this.id = "000000000000000000000000";
         this.participants = new LinkedList<>(Arrays.asList(

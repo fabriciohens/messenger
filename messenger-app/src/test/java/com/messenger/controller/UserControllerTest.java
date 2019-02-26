@@ -1,7 +1,7 @@
 package com.messenger.controller;
 
 import com.messenger.model.User;
-import com.messenger.service.IUserService;
+import com.messenger.service.UserService;
 import com.messenger.utils.UserRole;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,14 +16,14 @@ import static org.mockito.Mockito.*;
 
 public class UserControllerTest {
 
-    private IUserService userServiceMock;
+    private UserService userServiceMock;
     private UserController controllerToTest;
     private User user;
     private String id;
 
     @Before
     public void setUp() {
-        this.userServiceMock = mock(IUserService.class);
+        this.userServiceMock = mock(UserService.class);
         this.controllerToTest = new UserController(userServiceMock);
 
         this.id = "000000000000000000000000";

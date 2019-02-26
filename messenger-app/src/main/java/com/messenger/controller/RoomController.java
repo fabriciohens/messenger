@@ -3,9 +3,9 @@ package com.messenger.controller;
 import com.messenger.model.Message;
 import com.messenger.model.Room;
 import com.messenger.model.User;
-import com.messenger.service.IMessageService;
-import com.messenger.service.IRoomService;
-import com.messenger.service.IUserService;
+import com.messenger.service.MessageService;
+import com.messenger.service.RoomService;
+import com.messenger.service.UserService;
 import com.messenger.utils.SearchType;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -18,11 +18,11 @@ import java.util.List;
 @RequestMapping("/rooms")
 public class RoomController {
 
-    private final IRoomService roomService;
-    private final IMessageService messageService;
-    private final IUserService userService;
+    private final RoomService roomService;
+    private final MessageService messageService;
+    private final UserService userService;
 
-    public RoomController(final IRoomService roomService, final IMessageService messageService, final IUserService userService) {
+    public RoomController(final RoomService roomService, final MessageService messageService, final UserService userService) {
         this.roomService = roomService;
         this.messageService = messageService;
         this.userService = userService;

@@ -1,7 +1,7 @@
 package com.messenger.controller;
 
 import com.messenger.model.User;
-import com.messenger.service.IUserService;
+import com.messenger.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +12,9 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
-    private final IUserService userService;
+    private final UserService userService;
 
-    public UserController(final IUserService userService) {
+    public UserController(final UserService userService) {
         this.userService = userService;
     }
 

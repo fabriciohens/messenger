@@ -1,7 +1,7 @@
 package com.messenger.service.impl;
 
 import com.messenger.model.User;
-import com.messenger.repository.IUserRepository;
+import com.messenger.repository.UserRepository;
 import com.messenger.utils.UserRole;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,13 +15,13 @@ import static org.mockito.Mockito.when;
 
 public class UserDetailServiceTest {
 
-    private IUserRepository userRepositoryMock;
-    private MyUserDetailsService serviceToTest;
+    private UserRepository userRepositoryMock;
+    private UserDetailsServiceImpl serviceToTest;
 
     @Before
     public void setUp() {
-        this.userRepositoryMock = mock(IUserRepository.class);
-        this.serviceToTest = new MyUserDetailsService(userRepositoryMock);
+        this.userRepositoryMock = mock(UserRepository.class);
+        this.serviceToTest = new UserDetailsServiceImpl(userRepositoryMock);
     }
 
     @Test

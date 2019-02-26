@@ -7,7 +7,7 @@ import com.messenger.utils.SearchType;
 
 import java.util.List;
 
-public interface IMessageService {
+public interface MessageService {
 
     Message sendMessage(final Room room, final Message message);
 

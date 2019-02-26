@@ -5,7 +5,7 @@ import com.messenger.model.User;
 
 import java.util.List;
 
-public interface IUserService {
+public interface UserService {
 
     User insert(final User user) throws IllegalArgumentException;
 

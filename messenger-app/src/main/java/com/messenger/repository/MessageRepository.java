@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
 
-public interface IMessageRepository extends MongoRepository<Message, String> {
+public interface MessageRepository extends MongoRepository<Message, String> {
 
     List<Message> findAllByContentIsContaining(String content);
 

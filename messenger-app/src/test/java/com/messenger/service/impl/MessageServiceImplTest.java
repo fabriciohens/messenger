@@ -3,10 +3,10 @@ package com.messenger.service.impl;
 import com.messenger.model.Message;
 import com.messenger.model.Room;
 import com.messenger.model.User;
-import com.messenger.repository.IMessageRepository;
-import com.messenger.repository.IRoomRepository;
-import com.messenger.repository.IUserRepository;
-import com.messenger.service.IMessageService;
+import com.messenger.repository.MessageRepository;
+import com.messenger.repository.RoomRepository;
+import com.messenger.repository.UserRepository;
+import com.messenger.service.MessageService;
 import com.messenger.utils.SearchType;
 import com.messenger.utils.UserRole;
 import org.junit.Before;
@@ -23,12 +23,12 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-public class MessageServiceTest {
+public class MessageServiceImplTest {
 
-    private IMessageRepository messageRepositoryMock;
-    private IUserRepository userRepositoryMock;
-    private IRoomRepository roomRepositoryMock;
-    private IMessageService serviceToTest;
+    private MessageRepository messageRepositoryMock;
+    private UserRepository userRepositoryMock;
+    private RoomRepository roomRepositoryMock;
+    private MessageService serviceToTest;
 
     private Room room;
     private Message message;
@@ -36,10 +36,10 @@ public class MessageServiceTest {
 
     @Before
     public void setUp() {
-        this.messageRepositoryMock = Mockito.mock(IMessageRepository.class);
-        this.userRepositoryMock = Mockito.mock(IUserRepository.class);
-        this.roomRepositoryMock = Mockito.mock(IRoomRepository.class);
-        this.serviceToTest = new MessageService(messageRepositoryMock, userRepositoryMock, roomRepositoryMock);
+        this.messageRepositoryMock = Mockito.mock(MessageRepository.class);
+        this.userRepositoryMock = Mockito.mock(UserRepository.class);
+        this.roomRepositoryMock = Mockito.mock(RoomRepository.class);
+        this.serviceToTest = new MessageServiceImpl(messageRepositoryMock, userRepositoryMock, roomRepositoryMock);
 
         List<User> participants = Arrays.asList(
                 new User("FirstName", "LastName", "email@email.com", "secret", UserRole.NORMAL),
