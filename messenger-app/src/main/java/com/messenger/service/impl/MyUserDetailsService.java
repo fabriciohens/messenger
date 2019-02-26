@@ -10,29 +10,30 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
+
+import static java.util.Arrays.asList;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 
-    private final IUserRepository repository;
+    private final IUserRepository userRepository;
 
-    public MyUserDetailsService(final IUserRepository repository) {
-        this.repository = repository;
+    public MyUserDetailsService(final IUserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
         PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
-        User user = repository.findByEmail(email);
+        User user = userRepository.findByEmail(email);
 
         if (user == null) {
             throw new UsernameNotFoundException("User not found!");
         }
 
-        List<SimpleGrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority(user.getUserRole().name()));
+        List<SimpleGrantedAuthority> authorities = asList(new SimpleGrantedAuthority(user.getUserRole().name()));
 
         return new org.springframework.security.core.userdetails.User(user.getEmail(), encoder.encode(user.getPassword()), authorities);
     }
