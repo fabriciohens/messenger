@@ -21,6 +21,7 @@ import org.junit.runner.RunWith;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.jbehave.core.io.CodeLocations.*;
 import static org.jbehave.core.io.CodeLocations.codeLocationFromClass;
 import static org.jbehave.core.reporters.Format.CONSOLE;
 
@@ -66,9 +67,8 @@ public class ThreadStoriesLiveTest extends JUnitStories {
         return new MostUsefulConfiguration()
                 .useStoryLoader(new LoadFromClasspath(embeddableClass))
                 .useStoryReporterBuilder(new StoryReporterBuilder()
-                        .withCodeLocation(CodeLocations.codeLocationFromClass(embeddableClass))
-                        .withFormats(CONSOLE).withDefaultFormats()
-                        .withFailureTrace(true).withFailureTraceCompression(true));
+                        .withCodeLocation(codeLocationFromClass(embeddableClass))
+                        .withFormats(CONSOLE));
     }
 
     @Override
