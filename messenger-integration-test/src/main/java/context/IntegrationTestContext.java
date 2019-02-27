@@ -11,18 +11,24 @@ public class IntegrationTestContext {
         context = new HashMap<>();
     }
 
-    public static void putNewObject(String key, Object o) {
-        if (context.containsKey(key)) {
+    public static void putNewObject(final String key, final Object object) {
+        String formedKey = formKey(key);
+        if (context.containsKey(formedKey)) {
             throw new IllegalArgumentException("There is already a object in the context with key: " + key);
         }
-        context.put(key, o);
+        context.put(formedKey, object);
     }
 
-    public static Object updateObject(String key, Object o) {
-        return context.put(key, o);
+    public static void updateObject(final String key, final Object o) {
+        context.put(formKey(key), o);
     }
 
-    public static Object getObject(String key) {
-        return context.get(key);
+    public static Object getObject(final String key) {
+        return context.get(formKey(key));
+    }
+
+    private static String formKey(final String key) {
+        long id = Thread.currentThread().getId();
+        return String.valueOf(id).concat(key);
     }
 }
