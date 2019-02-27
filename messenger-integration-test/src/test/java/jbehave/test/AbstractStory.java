@@ -1,5 +1,6 @@
 package jbehave.test;
 
+import com.github.valfirst.jbehave.junit.monitoring.JUnitReportingRunner;
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
 import org.jbehave.core.io.LoadFromClasspath;
@@ -7,6 +8,7 @@ import org.jbehave.core.junit.JUnitStories;
 import org.jbehave.core.reporters.StoryReporterBuilder;
 import org.jbehave.core.steps.InjectableStepsFactory;
 import org.jbehave.core.steps.InstanceStepsFactory;
+import org.junit.runner.RunWith;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,11 +16,12 @@ import java.util.List;
 import static org.jbehave.core.io.CodeLocations.codeLocationFromClass;
 import static org.jbehave.core.reporters.Format.CONSOLE;
 
+@RunWith(JUnitReportingRunner.class)
 public abstract class AbstractStory extends JUnitStories {
 
     public abstract String storyName();
 
-    public abstract Object stepInstance();
+    public abstract List<Object> stepInstances();
 
     @Override
     public Configuration configuration() {
@@ -31,7 +34,7 @@ public abstract class AbstractStory extends JUnitStories {
 
     @Override
     public InjectableStepsFactory stepsFactory() {
-        return new InstanceStepsFactory(configuration(), stepInstance());
+        return new InstanceStepsFactory(configuration(), stepInstances());
     }
 
     @Override
