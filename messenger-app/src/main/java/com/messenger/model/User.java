@@ -1,6 +1,6 @@
 package com.messenger.model;
 
-import com.messenger.utils.UserRole;
+import com.messenger.enums.UserRole;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

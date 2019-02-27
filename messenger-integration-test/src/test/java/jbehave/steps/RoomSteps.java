@@ -7,7 +7,7 @@ import action.room.*;
 import com.messenger.model.Message;
 import com.messenger.model.Room;
 import com.messenger.model.User;
-import com.messenger.utils.SearchType;
+import com.messenger.enums.SearchType;
 import context.IntegrationTestContext;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;

@@ -5,7 +5,7 @@ import action.user.FindAllUserAction;
 import action.user.GetUserAction;
 import action.user.UpdateUserAction;
 import com.messenger.model.User;
-import com.messenger.utils.UserRole;
+import com.messenger.enums.UserRole;
 import context.IntegrationTestContext;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;

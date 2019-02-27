@@ -4,7 +4,7 @@ import com.messenger.exception.UserNotFoundException;
 import com.messenger.model.User;
 import com.messenger.repository.UserRepository;
 import com.messenger.service.UserService;
-import com.messenger.utils.UserRole;
+import com.messenger.enums.UserRole;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.stubbing.Answer;

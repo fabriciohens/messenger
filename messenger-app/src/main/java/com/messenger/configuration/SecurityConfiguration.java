@@ -1,7 +1,7 @@
 package com.messenger.configuration;
 
 import com.messenger.service.impl.UserDetailsServiceImpl;
-import com.messenger.utils.UserRole;
+import com.messenger.enums.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;

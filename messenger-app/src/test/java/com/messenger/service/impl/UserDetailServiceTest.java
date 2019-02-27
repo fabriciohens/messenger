@@ -2,7 +2,7 @@ package com.messenger.service.impl;
 
 import com.messenger.model.User;
 import com.messenger.repository.UserRepository;
-import com.messenger.utils.UserRole;
+import com.messenger.enums.UserRole;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -6,7 +6,7 @@ import com.messenger.model.User;
 import com.messenger.service.MessageService;
 import com.messenger.service.RoomService;
 import com.messenger.service.UserService;
-import com.messenger.utils.SearchType;
+import com.messenger.enums.SearchType;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,6 @@
 package com.messenger.model;
 
-import com.messenger.utils.UserRole;
+import com.messenger.enums.UserRole;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

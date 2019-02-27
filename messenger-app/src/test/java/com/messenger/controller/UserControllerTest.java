@@ -2,7 +2,7 @@ package com.messenger.controller;
 
 import com.messenger.model.User;
 import com.messenger.service.UserService;
-import com.messenger.utils.UserRole;
+import com.messenger.enums.UserRole;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;

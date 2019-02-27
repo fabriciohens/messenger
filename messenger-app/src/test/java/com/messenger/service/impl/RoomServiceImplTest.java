@@ -6,7 +6,7 @@ import com.messenger.model.Room;
 import com.messenger.model.User;
 import com.messenger.repository.RoomRepository;
 import com.messenger.service.RoomService;
-import com.messenger.utils.UserRole;
+import com.messenger.enums.UserRole;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;

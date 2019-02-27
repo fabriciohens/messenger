@@ -8,7 +8,7 @@ import com.messenger.repository.MessageRepository;
 import com.messenger.repository.RoomRepository;
 import com.messenger.repository.UserRepository;
 import com.messenger.service.MessageService;
-import com.messenger.utils.SearchType;
+import com.messenger.enums.SearchType;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 

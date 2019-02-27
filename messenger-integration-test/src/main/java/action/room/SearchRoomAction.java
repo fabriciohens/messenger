@@ -1,8 +1,7 @@
 package action.room;
 
 import action.ApiClientAction;
-import com.messenger.model.Message;
-import com.messenger.utils.SearchType;
+import com.messenger.enums.SearchType;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;

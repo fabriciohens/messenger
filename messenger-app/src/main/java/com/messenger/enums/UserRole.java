@@ -1,4 +1,4 @@
-package com.messenger.utils;
+package com.messenger.enums;
 
 public enum UserRole {
     NORMAL,
