@@ -23,8 +23,8 @@ import static org.mockito.Mockito.*;
 
 public class RoomServiceImplTest {
 
-    private RoomRepository roomRepositoryMock;
-    private RoomService serviceToTest;
+    private RoomRepository roomRepository;
+    private RoomService roomService;
 
     private Room room;
     private List<User> participants;
@@ -32,8 +32,8 @@ public class RoomServiceImplTest {
 
     @Before
     public void setUp() {
-        this.roomRepositoryMock = Mockito.mock(RoomRepository.class);
-        this.serviceToTest = new RoomServiceImpl(roomRepositoryMock);
+        this.roomRepository = Mockito.mock(RoomRepository.class);
+        this.roomService = new RoomServiceImpl(roomRepository);
 
         this.id = "000000000000000000000000";
         this.participants = new LinkedList<>(Arrays.asList(
@@ -53,18 +53,18 @@ public class RoomServiceImplTest {
             Room room = invocation.getArgument(0);
             room.setId(id);
             return null;
-        }).when(roomRepositoryMock).insert(any(Room.class));
+        }).when(roomRepository).insert(any(Room.class));
 
-        serviceToTest.insert(roomToInsert);
+        roomService.insert(roomToInsert);
 
         assertNotNull(roomToInsert.getId());
-        verify(roomRepositoryMock, times(1)).insert(any(Room.class));
+        verify(roomRepository, times(1)).insert(any(Room.class));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testInsertInvalidValuesThrowsException() {
         Room invalidRoom = new Room("", Collections.emptyList());
-        serviceToTest.insert(invalidRoom);
+        roomService.insert(invalidRoom);
     }
 
     @Test
@@ -72,56 +72,56 @@ public class RoomServiceImplTest {
         Room newRoom = new Room("newName", room.getParticipants());
         Room expectedRoom = new Room("newName", room.getParticipants());
         expectedRoom.setId(id);
-        when(roomRepositoryMock.findById(id)).thenReturn(Optional.of(room));
-        Room actual = serviceToTest.update(id, newRoom);
+        when(roomRepository.findById(id)).thenReturn(Optional.of(room));
+        Room actual = roomService.update(id, newRoom);
         assertEquals(expectedRoom, actual);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testUpdateInvalidValuesThrowsException() {
         Room invalidRoom = new Room(null, room.getParticipants());
-        serviceToTest.update(id, invalidRoom);
+        roomService.update(id, invalidRoom);
     }
 
     @Test(expected = RoomNotFoundException.class)
     public void testUpdateNonExistentUser() {
-        doThrow(RoomNotFoundException.class).when(roomRepositoryMock).findById(id);
-        serviceToTest.update(id, room);
+        doThrow(RoomNotFoundException.class).when(roomRepository).findById(id);
+        roomService.update(id, room);
     }
 
     @Test
     public void testDelete() {
-        when(roomRepositoryMock.findById(anyString())).thenReturn(Optional.of(room));
-        serviceToTest.delete(id);
-        verify(roomRepositoryMock, times(1)).delete(any(Room.class));
+        when(roomRepository.findById(anyString())).thenReturn(Optional.of(room));
+        roomService.delete(id);
+        verify(roomRepository, times(1)).delete(any(Room.class));
     }
 
     @Test
     public void testFind() {
-        when(roomRepositoryMock.findById(anyString())).thenReturn(Optional.of(room));
-        Room actual = serviceToTest.find(id);
+        when(roomRepository.findById(anyString())).thenReturn(Optional.of(room));
+        Room actual = roomService.find(id);
         assertEquals(room, actual);
     }
 
     @Test(expected = RoomNotFoundException.class)
     public void testFindNonExistentId() {
-        doThrow(RoomNotFoundException.class).when(roomRepositoryMock).findById(id);
-        serviceToTest.find(id);
+        doThrow(RoomNotFoundException.class).when(roomRepository).findById(id);
+        roomService.find(id);
     }
 
     @Test
     public void testFindAll() {
         Page<Room> mockReturn = new PageImpl<>(Collections.singletonList(room));
-        when(roomRepositoryMock.findAll(any(Pageable.class))).thenReturn(mockReturn);
-        Page<Room> actual = serviceToTest.findAll(0);
+        when(roomRepository.findAll(any(Pageable.class))).thenReturn(mockReturn);
+        Page<Room> actual = roomService.findAll(0);
         assertEquals(mockReturn, actual);
     }
 
     @Test
     public void testFindUsersRooms() {
         User user = room.getParticipants().get(0);
-        when(roomRepositoryMock.findAllByParticipantsIsContaining(user)).thenReturn(Collections.singletonList(room));
-        List<Room> rooms = serviceToTest.findUsersRooms(user);
+        when(roomRepository.findAllByParticipantsIsContaining(user)).thenReturn(Collections.singletonList(room));
+        List<Room> rooms = roomService.findUsersRooms(user);
         assertTrue(rooms.size() > 0);
     }
 
@@ -131,8 +131,8 @@ public class RoomServiceImplTest {
         List<User> receivers = Collections.singletonList(room.getParticipants().get(1));
         Message newMessage = new Message(sender, receivers, "Hello");
         List<Message> messages = new ArrayList<>(Collections.singletonList(newMessage));
-        when(roomRepositoryMock.findAllByMessagesIsContaining(anyList())).thenReturn(Collections.singletonList(room));
-        List<Room> rooms = serviceToTest.findAllByMessages(messages);
+        when(roomRepository.findAllByMessagesIsContaining(anyList())).thenReturn(Collections.singletonList(room));
+        List<Room> rooms = roomService.findAllByMessages(messages);
         assertTrue(rooms.size() > 0);
     }
 
@@ -144,12 +144,12 @@ public class RoomServiceImplTest {
         room.getParticipants().get(2).setId("22222222222222222222");
         room.getParticipants().get(3).setId("33333333333333333333");
 
-        when(roomRepositoryMock.findById(anyString())).thenReturn(Optional.of(room));
+        when(roomRepository.findById(anyString())).thenReturn(Optional.of(room));
 
-        Room actual = serviceToTest.removeParticipantFromRoom(id, removeThisId);
+        Room actual = roomService.removeParticipantFromRoom(id, removeThisId);
 
         assertEquals(3, actual.getParticipants().size());
-        verify(roomRepositoryMock, times(1)).save(any(Room.class));
+        verify(roomRepository, times(1)).save(any(Room.class));
 
     }
 }

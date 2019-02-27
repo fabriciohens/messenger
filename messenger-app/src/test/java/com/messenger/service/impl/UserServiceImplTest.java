@@ -19,16 +19,16 @@ import static org.mockito.Mockito.*;
 
 public class UserServiceImplTest {
 
-    private UserRepository userRepositoryMock;
-    private UserService serviceToTest;
+    private UserRepository userRepository;
+    private UserService userService;
 
     private String id;
     private User user;
 
     @Before
     public void setUp() {
-        this.userRepositoryMock = mock(UserRepository.class);
-        this.serviceToTest = new UserServiceImpl(userRepositoryMock);
+        this.userRepository = mock(UserRepository.class);
+        this.userService = new UserServiceImpl(userRepository);
 
         this.id = "000000000000000000000000";
         this.user = new User("Ben", "Joli", "ben@email.com", "secret", UserRole.NORMAL);
@@ -42,18 +42,18 @@ public class UserServiceImplTest {
             User user = invocation.getArgument(0);
             user.setId(id);
             return null;
-        }).when(userRepositoryMock).insert(any(User.class));
+        }).when(userRepository).insert(any(User.class));
 
-        serviceToTest.insert(userToInsert);
+        userService.insert(userToInsert);
 
         assertNotNull(userToInsert.getId());
-        verify(userRepositoryMock, times(1)).insert(any(User.class));
+        verify(userRepository, times(1)).insert(any(User.class));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testInsertInvalidValuesThrowsException() {
         User invalidUser = new User("", "", "", "", null);
-        serviceToTest.insert(invalidUser);
+        userService.insert(invalidUser);
     }
 
     @Test
@@ -61,9 +61,9 @@ public class UserServiceImplTest {
         User newUser = new User("newFirstName", "newLastName", user.getEmail(), user.getPassword(), user.getUserRole());
         User expectedUser = new User("newFirstName", "newLastName", user.getEmail(), user.getPassword(), user.getUserRole());
         expectedUser.setId(id);
-        when(userRepositoryMock.findById(id)).thenReturn(Optional.of(user));
+        when(userRepository.findById(id)).thenReturn(Optional.of(user));
 
-        User actual = serviceToTest.update(id, newUser);
+        User actual = userService.update(id, newUser);
 
         assertEquals(expectedUser, actual);
     }
@@ -71,40 +71,40 @@ public class UserServiceImplTest {
     @Test(expected = IllegalArgumentException.class)
     public void testUpdateInvalidValuesThrowsException() {
         User invalidUser = new User("", "", "", "", null);
-        serviceToTest.update(id, invalidUser);
+        userService.update(id, invalidUser);
     }
 
     @Test(expected = UserNotFoundException.class)
     public void testUpdateNonExistentUser() {
-        doThrow(UserNotFoundException.class).when(userRepositoryMock).findById(id);
-        serviceToTest.update(id, user);
+        doThrow(UserNotFoundException.class).when(userRepository).findById(id);
+        userService.update(id, user);
     }
 
     @Test
     public void testDelete() {
-        when(userRepositoryMock.findById(anyString())).thenReturn(Optional.of(user));
-        serviceToTest.delete(id);
-        verify(userRepositoryMock, times(1)).delete(any(User.class));
+        when(userRepository.findById(anyString())).thenReturn(Optional.of(user));
+        userService.delete(id);
+        verify(userRepository, times(1)).delete(any(User.class));
     }
 
     @Test
     public void testFind() {
-        when(userRepositoryMock.findById(anyString())).thenReturn(Optional.of(user));
-        User actual = serviceToTest.find(id);
+        when(userRepository.findById(anyString())).thenReturn(Optional.of(user));
+        User actual = userService.find(id);
         assertEquals(user, actual);
     }
 
     @Test(expected = UserNotFoundException.class)
     public void testFindNonExistentId() {
-        doThrow(UserNotFoundException.class).when(userRepositoryMock).findById(id);
-        serviceToTest.find(id);
+        doThrow(UserNotFoundException.class).when(userRepository).findById(id);
+        userService.find(id);
     }
 
     @Test
     public void testFindAll() {
         List<User> mockReturn = Collections.singletonList(user);
-        when(userRepositoryMock.findAll()).thenReturn(mockReturn);
-        List<User> actual = serviceToTest.findAll();
+        when(userRepository.findAll()).thenReturn(mockReturn);
+        List<User> actual = userService.findAll();
         assertEquals(mockReturn, actual);
     }
 }

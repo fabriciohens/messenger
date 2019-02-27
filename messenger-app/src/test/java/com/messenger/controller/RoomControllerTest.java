@@ -27,20 +27,20 @@ import static org.mockito.Mockito.when;
 
 public class RoomControllerTest {
 
-    private RoomService roomServiceMock;
-    private MessageService messageServiceMock;
-    private UserService userServiceMock;
-    private RoomController controllerToTest;
+    private RoomService roomService;
+    private MessageService messageService;
+    private UserService userService;
+    private RoomController roomController;
     private Room room;
     private List<User> participants;
     private String id;
 
     @Before
     public void setUp() {
-        this.roomServiceMock = Mockito.mock(RoomService.class);
-        this.messageServiceMock = Mockito.mock(MessageService.class);
-        this.userServiceMock = Mockito.mock(UserService.class);
-        this.controllerToTest = new RoomController(roomServiceMock, messageServiceMock, userServiceMock);
+        this.roomService = Mockito.mock(RoomService.class);
+        this.messageService = Mockito.mock(MessageService.class);
+        this.userService = Mockito.mock(UserService.class);
+        this.roomController = new RoomController(roomService, messageService, userService);
 
         this.id = "000000000000000000000000";
         this.participants = Arrays.asList(
@@ -58,29 +58,29 @@ public class RoomControllerTest {
         Room roomToCreate = new Room(room.getName(), room.getParticipants());
         Room roomToReturn = new Room(room.getName(), room.getParticipants());
         roomToReturn.setId(id);
-        when(roomServiceMock.insert(any(Room.class))).thenReturn(roomToReturn);
-        ResponseEntity actual = controllerToTest.create(roomToCreate);
+        when(roomService.insert(any(Room.class))).thenReturn(roomToReturn);
+        ResponseEntity actual = roomController.create(roomToCreate);
         assertEquals(ResponseEntity.status(HttpStatus.CREATED).body(room), actual);
     }
 
     @Test
     public void testUpdateRoomValidValues() {
         Room newRoom = new Room("newName", room.getParticipants());
-        when(roomServiceMock.update(id, newRoom)).thenReturn(newRoom);
-        ResponseEntity actual = controllerToTest.update(id, newRoom);
+        when(roomService.update(id, newRoom)).thenReturn(newRoom);
+        ResponseEntity actual = roomController.update(id, newRoom);
         assertEquals(ResponseEntity.status(HttpStatus.OK).body(newRoom), actual);
     }
 
     @Test
     public void testDeleteRoom() {
-        HttpStatus actual = controllerToTest.delete(id).getStatusCode();
+        HttpStatus actual = roomController.delete(id).getStatusCode();
         assertEquals(HttpStatus.OK, actual);
     }
 
     @Test
     public void testGetRoom() {
-        when(roomServiceMock.find(id)).thenReturn(room);
-        ResponseEntity actual = controllerToTest.find(id);
+        when(roomService.find(id)).thenReturn(room);
+        ResponseEntity actual = roomController.find(id);
         assertEquals(ResponseEntity.status(HttpStatus.OK).body(room), actual);
     }
 
@@ -88,8 +88,8 @@ public class RoomControllerTest {
     public void testGetAllRooms() {
         int numPage = 0;
         Page<Room> expected = new PageImpl<>(Collections.singletonList(room));
-        when(roomServiceMock.findAll(numPage)).thenReturn(expected);
-        Page<Room> actual = controllerToTest.findAllRooms(numPage).getBody();
+        when(roomService.findAll(numPage)).thenReturn(expected);
+        Page<Room> actual = roomController.findAllRooms(numPage).getBody();
         assertEquals(expected, actual);
     }
 
@@ -100,8 +100,8 @@ public class RoomControllerTest {
         List<User> expectedParticipants = Arrays.asList(participants.get(1), participants.get(2));
         Room expectedRoom = new Room(room.getName(), expectedParticipants);
         expectedRoom.setId(id);
-        when(roomServiceMock.removeParticipantFromRoom(id, idParticipant)).thenReturn(expectedRoom);
-        Room actual = controllerToTest.removeParticipant(id, idParticipant).getBody();
+        when(roomService.removeParticipantFromRoom(id, idParticipant)).thenReturn(expectedRoom);
+        Room actual = roomController.removeParticipant(id, idParticipant).getBody();
 
         assertEquals(expectedRoom, actual);
     }
@@ -112,21 +112,21 @@ public class RoomControllerTest {
         List<User> receivers = Collections.singletonList(room.getParticipants().get(1));
         Message newMessage = new Message(sender, receivers, "Hello");
 
-        when(messageServiceMock.search(any(SearchType.class), anyString())).thenReturn(Collections.singletonList(newMessage));
-        when(roomServiceMock.findAllByMessages(Collections.singletonList(newMessage))).thenReturn(Collections.singletonList(room));
+        when(messageService.search(any(SearchType.class), anyString())).thenReturn(Collections.singletonList(newMessage));
+        when(roomService.findAllByMessages(Collections.singletonList(newMessage))).thenReturn(Collections.singletonList(room));
 
-        List<Room> actual = controllerToTest.search(SearchType.CONTENT, "Hello").getBody();
+        List<Room> actual = roomController.search(SearchType.CONTENT, "Hello").getBody();
         assertEquals(Collections.singletonList(room), actual);
     }
 
     @Test
     public void testGetUsersRooms() {
         User participant = room.getParticipants().get(0);
-        when(userServiceMock.find(id)).thenReturn(participant);
-        when(roomServiceMock.findUsersRooms(participant)).thenReturn(Collections.singletonList(room));
+        when(userService.find(id)).thenReturn(participant);
+        when(roomService.findUsersRooms(participant)).thenReturn(Collections.singletonList(room));
 
         ResponseEntity expected = ResponseEntity.status(HttpStatus.OK).body(Collections.singletonList(room));
-        ResponseEntity actual = controllerToTest.findUsersRooms(id);
+        ResponseEntity actual = roomController.findUsersRooms(id);
         assertEquals(expected, actual);
     }
 }

@@ -13,18 +13,19 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
+import static org.springframework.http.HttpStatus.*;
 
 public class UserControllerTest {
 
-    private UserService userServiceMock;
-    private UserController controllerToTest;
+    private UserService userService;
+    private UserController userController;
     private User user;
     private String id;
 
     @Before
     public void setUp() {
-        this.userServiceMock = mock(UserService.class);
-        this.controllerToTest = new UserController(userServiceMock);
+        this.userService = mock(UserService.class);
+        this.userController = new UserController(userService);
 
         this.id = "000000000000000000000000";
         this.user = new User("Ben", "Joli", "ben@email.com", "secret", UserRole.NORMAL);
@@ -36,40 +37,40 @@ public class UserControllerTest {
         User userToCreate = new User(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), user.getUserRole());
         User userToReturn = new User(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), user.getUserRole());
         userToReturn.setId(id);
-        when(userServiceMock.insert(any(User.class))).thenReturn(userToReturn);
-        ResponseEntity actual = controllerToTest.create(userToCreate);
+        when(userService.insert(any(User.class))).thenReturn(userToReturn);
+        ResponseEntity actual = userController.create(userToCreate);
 
-        assertEquals(ResponseEntity.status(HttpStatus.CREATED).body(user), actual);
-        verify(userServiceMock, times(1)).insert(any(User.class));
+        assertEquals(ResponseEntity.status(CREATED).body(userToReturn), actual);
+        verify(userService, times(1)).insert(any(User.class));
     }
 
     @Test
     public void testUpdateUserValidValues() {
         User newUser = new User(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), user.getUserRole());
-        when(userServiceMock.update(id, newUser)).thenReturn(user);
-        ResponseEntity actual = controllerToTest.update(id, newUser);
-        assertEquals(ResponseEntity.status(HttpStatus.OK).body(user), actual);
+        when(userService.update(id, newUser)).thenReturn(user);
+        ResponseEntity actual = userController.update(id, newUser);
+        assertEquals(ResponseEntity.status(OK).body(user), actual);
     }
 
     @Test
     public void testDeleteUser() {
-        HttpStatus actual = controllerToTest.delete(id).getStatusCode();
-        assertEquals(HttpStatus.OK, actual);
+        HttpStatus actual = userController.delete(id).getStatusCode();
+        assertEquals(OK, actual);
     }
 
     @Test
     public void testGetUser() {
-        when(userServiceMock.find(id)).thenReturn(user);
-        ResponseEntity actual = controllerToTest.find(id);
-        assertEquals(ResponseEntity.status(HttpStatus.OK).body(user), actual);
+        when(userService.find(id)).thenReturn(user);
+        ResponseEntity actual = userController.find(id);
+        assertEquals(ResponseEntity.status(OK).body(user), actual);
     }
 
     @Test
     public void testGetAllUsers() {
         List<User> users = Collections.singletonList(user);
-        when(userServiceMock.findAll()).thenReturn(users);
-        ResponseEntity expected = ResponseEntity.status(HttpStatus.OK).body(users);
-        ResponseEntity actual = controllerToTest.findAll();
+        when(userService.findAll()).thenReturn(users);
+        ResponseEntity expected = ResponseEntity.status(OK).body(users);
+        ResponseEntity actual = userController.findAll();
         assertEquals(expected, actual);
     }
 

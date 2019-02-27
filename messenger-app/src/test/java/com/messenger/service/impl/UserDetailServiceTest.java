@@ -15,26 +15,26 @@ import static org.mockito.Mockito.when;
 
 public class UserDetailServiceTest {
 
-    private UserRepository userRepositoryMock;
-    private UserDetailsServiceImpl serviceToTest;
+    private UserRepository userRepository;
+    private UserDetailsServiceImpl userDetailsService;
 
     @Before
     public void setUp() {
-        this.userRepositoryMock = mock(UserRepository.class);
-        this.serviceToTest = new UserDetailsServiceImpl(userRepositoryMock);
+        this.userRepository = mock(UserRepository.class);
+        this.userDetailsService = new UserDetailsServiceImpl(userRepository);
     }
 
     @Test
     public void testLoadUserByUsername() {
         User user = new User("FirstName", "LastName", "email@email@.com", "secret", UserRole.NORMAL);
-        when(userRepositoryMock.findByEmail(anyString())).thenReturn(user);
-        UserDetails userDetail = serviceToTest.loadUserByUsername(user.getEmail());
+        when(userRepository.findByEmail(anyString())).thenReturn(user);
+        UserDetails userDetail = userDetailsService.loadUserByUsername(user.getEmail());
         assertNotNull(userDetail);
     }
 
     @Test(expected = UsernameNotFoundException.class)
     public void testLoadUserByUsernameNonExistentEmail() {
-        when(userRepositoryMock.findByEmail(anyString())).thenReturn(null);
-        serviceToTest.loadUserByUsername("NonExistentEmail");
+        when(userRepository.findByEmail(anyString())).thenReturn(null);
+        userDetailsService.loadUserByUsername("NonExistentEmail");
     }
 }
