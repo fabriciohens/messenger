@@ -16,17 +16,19 @@ import utils.RandomString;
 
 import javax.ws.rs.core.Response;
 
+import static org.junit.Assert.assertNotNull;
+
 public class UserSteps {
 
     private final RandomString randomString = new RandomString(10);
 
     @Given("a new user $nameOfUser with role $nameOfRole")
-    public void givenANewUserNameOfUserWithRoleNameOfRole(final String nameOfUser,
-                                                          final String nameOfRole) {
+    public void givenANewUserNameOfUserWithRoleNameOfRole(final String nameOfUser, final String nameOfRole) {
         User newUser = new User(nameOfUser, nameOfUser, generateEmail(), generatePassword(), UserRole.valueOf(nameOfRole));
         CreateUserAction action = new CreateUserAction(AdminUserCredentials.EMAIL, AdminUserCredentials.PASSWORD);
 
         Response response = action.create(newUser);
+        assertNotNull(response);
         User createdUser = response.readEntity(User.class);
         IntegrationTestContext.putNewObject(nameOfUser, createdUser);
 
@@ -43,6 +45,7 @@ public class UserSteps {
 
         CreateUserAction createUserAction = new CreateUserAction(rodrigo.getEmail(), rodrigo.getPassword());
         Response response = createUserAction.create(newUser);
+        assertNotNull(response);
         User createdUser = response.readEntity(User.class);
         IntegrationTestContext.putNewObject(nameOfUserToUpdate, createdUser);
 
@@ -74,10 +77,10 @@ public class UserSteps {
         Assert.assertEquals(403, response.getStatus());
     }
 
-    @When("$nameOfUser updates role of $nameOfUser to $nameOfRole")
-    public void whenNameOfUserUpdatesRoleOfNameOfUserToNameOfRole(final String nameOfUser,
-                                                                  final String nameOfUserToUpdate,
-                                                                  final String nameOfRole) {
+    @When("$nameOfUser updates role of $nameOfUserToUpdate to $nameOfRole")
+    public void whenNameOfUserUpdatesRoleOfNameOfUserToUpdateToNameOfRole(final String nameOfUser,
+                                                                          final String nameOfUserToUpdate,
+                                                                          final String nameOfRole) {
         User rodrigo = (User) IntegrationTestContext.getObject(nameOfUser);
         UpdateUserAction action = new UpdateUserAction(rodrigo.getEmail(), rodrigo.getPassword());
 
@@ -85,7 +88,7 @@ public class UserSteps {
         user.setUserRole(UserRole.valueOf(nameOfRole));
 
         Response response = action.update(user.getId(), user);
-
+        assertNotNull(response);
         User updatedUser = response.readEntity(User.class);
         IntegrationTestContext.updateObject(nameOfUserToUpdate, updatedUser);
 
@@ -101,6 +104,7 @@ public class UserSteps {
 
         User userToFetch = (User) IntegrationTestContext.getObject(nameOfUserToFetch);
         Response response = action.get(userToFetch.getId());
+        assertNotNull(response);
         User returnedUser = response.readEntity(User.class);
 
         Assert.assertNotNull(returnedUser);

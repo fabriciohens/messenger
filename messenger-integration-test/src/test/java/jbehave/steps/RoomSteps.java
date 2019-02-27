@@ -4,45 +4,25 @@ import action.message.FindAllMessagesAction;
 import action.message.GetMessageAction;
 import action.message.SendMessageAction;
 import action.room.*;
-import action.user.CreateUserAction;
 import com.messenger.model.Message;
 import com.messenger.model.Room;
 import com.messenger.model.User;
 import com.messenger.utils.SearchType;
-import com.messenger.utils.UserRole;
 import context.IntegrationTestContext;
-import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
-import utils.AdminUserCredentials;
-import utils.RandomString;
 
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class RoomSteps {
-
-    @Given("a new user $nameOfUser with role $nameOfRole")
-    public void givenANewUserNameOfUserWithRoleNameOfRole(final String nameOfUser,
-                                                          final String nameOfRole) {
-        CreateUserAction createUserAction = new CreateUserAction(AdminUserCredentials.EMAIL, AdminUserCredentials.PASSWORD);
-        RandomString randomString = new RandomString(10);
-        String email = randomString.nextString() + "@email.com";
-        String password = randomString.nextString();
-
-        User newUser = new User(nameOfUser, nameOfUser, email, password, UserRole.valueOf(nameOfRole));
-
-        Response response = createUserAction.create(newUser);
-        User createdUser = response.readEntity(User.class);
-        IntegrationTestContext.putNewObject(nameOfUser, createdUser);
-
-        assertNotNull(createdUser.getId());
-        assertEquals(201, response.getStatus());
-    }
 
     @When("$nameOfUSer creates a new room $nameOfRoom with $namesOfParticipants")
     public void whenNameOfUSerCreatesANewRoomNameOfRoomWithNamesOfParticipants(final String nameOfUSer,
@@ -57,6 +37,7 @@ public class RoomSteps {
         Room room = new Room(nameOfRoom, participants);
 
         Response response = createRoomAction.create(room);
+        assertNotNull(response);
         Room createdRoom = response.readEntity(Room.class);
         IntegrationTestContext.putNewObject(nameOfRoom, createdRoom);
 
@@ -74,8 +55,9 @@ public class RoomSteps {
 
         RemoveParticipantRoomAction action = new RemoveParticipantRoomAction(user.getEmail(), user.getPassword());
         Response response = action.removeParticipant(room.getId(), userToRemove.getId());
+        assertNotNull(response);
         Room returnedRoom = response.readEntity(Room.class);
-        IntegrationTestContext.putNewObject(nameOfRoom, returnedRoom);
+        IntegrationTestContext.updateObject(nameOfRoom, returnedRoom);
 
         assertNotNull(returnedRoom.getId());
         assertEquals(200, response.getStatus());
@@ -90,6 +72,7 @@ public class RoomSteps {
 
         GetRoomAction getRoomAction = new GetRoomAction(user.getEmail(), user.getPassword());
         Response response = getRoomAction.get(room.getId());
+        assertNotNull(response);
         Room returnedRoom = response.readEntity(Room.class);
 
         assertEquals(numOfParticipants, returnedRoom.getParticipants().size());
@@ -103,7 +86,7 @@ public class RoomSteps {
         FindAllRoomsAction findAllRoomsAction = new FindAllRoomsAction(user.getEmail(), user.getPassword());
         int page = 0;
         Response response = findAllRoomsAction.findAll(page);
-
+        assertNotNull(response);
         assertEquals(200, response.getStatus());
     }
 
@@ -119,6 +102,7 @@ public class RoomSteps {
         room.setName(newNameOfRoom);
 
         Response response = updateRoomAction.update(room.getId(), room);
+        assertNotNull(response);
         Room returnedRoom = response.readEntity(Room.class);
         IntegrationTestContext.updateObject(nameOfRoom, returnedRoom);
 
@@ -135,6 +119,7 @@ public class RoomSteps {
         GetRoomAction getRoomAction = new GetRoomAction(user.getEmail(), user.getPassword());
 
         Response response = getRoomAction.get(room.getId());
+        assertNotNull(response);
         Room returnedRoom = response.readEntity(Room.class);
 
         assertEquals(newNameOfRoom, returnedRoom.getName());
@@ -151,6 +136,7 @@ public class RoomSteps {
         GetRoomAction getRoomAction = new GetRoomAction(user.getEmail(), user.getPassword());
 
         Response response = getRoomAction.get(room.getId());
+        assertNotNull(response);
         Room returnedRoom = response.readEntity(Room.class);
 
         assertArrayEquals(namesOfParticipants.toArray(), returnedRoom.getParticipants().stream().map(User::getFirstName).toArray());
@@ -170,6 +156,7 @@ public class RoomSteps {
         SendMessageAction action = new SendMessageAction(sender.getEmail(), sender.getPassword());
 
         Response response = action.sendMessage(room.getId(), newMessage);
+        assertNotNull(response);
         Message sentMessage = response.readEntity(Message.class);
         IntegrationTestContext.putNewObject(message, sentMessage);
 
@@ -198,9 +185,11 @@ public class RoomSteps {
         Message sentMessage = (Message) IntegrationTestContext.getObject(message);
 
         GetRoomAction getRoomAction = new GetRoomAction(sender.getEmail(), sender.getPassword());
-        Room returnedRoom = getRoomAction.get(room.getId()).readEntity(Room.class);
+        Response response = getRoomAction.get(room.getId());
+        assertNotNull(response);
+        Room returnedRoom = response.readEntity(Room.class);
 
-        assertTrue(returnedRoom.getMessages().contains(sentMessage));
+                assertTrue(returnedRoom.getMessages().contains(sentMessage));
         assertEquals(sender.getId(), sentMessage.getSender().getId());
         assertArrayEquals(namesOfReceivers.toArray(), sentMessage.getReceivers().stream().map(User::getFirstName).toArray());
     }
@@ -212,6 +201,7 @@ public class RoomSteps {
 
         SearchRoomAction action = new SearchRoomAction(user.getEmail(), user.getPassword());
         Response response = action.searchRoom(SearchType.CONTENT, searchParam);
+        assertNotNull(response);
         List<Room> rooms = response.readEntity(new GenericType<List<Room>>() {
         });
 
@@ -227,6 +217,7 @@ public class RoomSteps {
 
         SearchRoomAction action = new SearchRoomAction(user.getEmail(), user.getPassword());
         Response response = action.searchRoom(SearchType.SENDER, userToSearch.getId());
+        assertNotNull(response);
         List<Room> rooms = response.readEntity(new GenericType<List<Room>>() {
         });
 
@@ -242,6 +233,7 @@ public class RoomSteps {
 
         SearchRoomAction action = new SearchRoomAction(user.getEmail(), user.getPassword());
         Response response = action.searchRoom(SearchType.RECEIVER, userToSearch.getId());
+        assertNotNull(response);
         List<Room> rooms = response.readEntity(new GenericType<List<Room>>() {
         });
 
@@ -255,6 +247,7 @@ public class RoomSteps {
 
         FindUsersRoomsAction action = new FindUsersRoomsAction(user.getEmail(), user.getPassword());
         Response response = action.findUsersRooms(user.getId());
+        assertNotNull(response);
         List<Room> rooms = response.readEntity(new GenericType<List<Room>>() {
         });
 
@@ -268,7 +261,7 @@ public class RoomSteps {
 
         FindAllMessagesAction action = new FindAllMessagesAction(user.getEmail(), user.getPassword());
         Response response = action.findAll();
-
+        assertNotNull(response);
         assertEquals(200, response.getStatus());
     }
 
@@ -280,6 +273,7 @@ public class RoomSteps {
 
         GetMessageAction action = new GetMessageAction(auditor.getEmail(), auditor.getPassword());
         Response response = action.get(message.getId());
+        assertNotNull(response);
         Message returnedMessage = response.readEntity(Message.class);
 
         assertEquals(nameOfMessage, returnedMessage.getContent());
@@ -295,6 +289,7 @@ public class RoomSteps {
 
         GetMessageAction action = new GetMessageAction(auditor.getEmail(), auditor.getPassword());
         Response response = action.get(message.getId());
+        assertNotNull(response);
         Message returnedMessage = response.readEntity(Message.class);
 
         assertEquals(nameOfSender, returnedMessage.getSender().getFirstName());
@@ -310,8 +305,8 @@ public class RoomSteps {
 
         GetMessageAction action = new GetMessageAction(auditor.getEmail(), auditor.getPassword());
         Response response = action.get(message.getId());
+        assertNotNull(response);
         Message returnedMessage = response.readEntity(Message.class);
-
         assertArrayEquals(namesOfReceivers.toArray(), returnedMessage.getReceivers().stream().map(User::getFirstName).toArray());
         assertEquals(200, response.getStatus());
     }
