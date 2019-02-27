@@ -8,14 +8,14 @@ So that I can achieve a business goal
 Scenario: SetUp
 Given a new user <nameOfUser> with role <nameOfRole>
 Examples:
-|nameOfUser|nameOfRole
-|Ed|NORMAL
-|Edd|NORMAL
-|Eddy|ADMIN
-|Bruna|ADMIN
-|Amanda|NORMAL
-|Liza|NORMAL
-|Carol|NORMAL
+|nameOfUser |nameOfRole |
+|Ed         |NORMAL     |
+|Edd        |NORMAL     |
+|Eddy       |ADMIN      |
+|Bruna      |ADMIN      |
+|Amanda     |NORMAL     |
+|Liza       |NORMAL     |
+|Carol      |NORMAL     |
 
 Scenario: An user creates room containing other users
 When Ed creates a new room Dudes with Edd, Eddy
