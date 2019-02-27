@@ -8,11 +8,13 @@ So that I can achieve a business goal
 Scenario: SetUp
 Given a new user Rodrigo with role ADMIN
 
-Scenario: An user creates others users with roles and these users test their roles
+Scenario: An user creates an user with role admin and the user test his role
 When Rodrigo creates a new user Mari with role ADMIN
+Then Mari is able to fetch all users
+
+Scenario: An user creates others users with roles and these users test their roles
 When Rodrigo creates a new user Gabi with role AUDITOR
 When Rodrigo creates a new user Fabricio with role NORMAL
-Then Mari is able to fetch all users
 Then Gabi is unable to fetch all users
 Then Fabricio is unable to fetch all users
 
