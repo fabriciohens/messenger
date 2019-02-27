@@ -1,6 +1,5 @@
-package com.messenger.controller;
+package com.messenger.advice;
 
-import com.messenger.advice.ControllerAdvice;
 import com.messenger.exception.MessageNotFoundException;
 import com.messenger.exception.RoomNotFoundException;
 import com.messenger.exception.UserNotFoundException;
@@ -51,6 +50,6 @@ public class ControllerAdviceTest {
     @Test
     public void testExceptionHandler() {
         HttpStatus actual = advice.exceptionHandler(new Exception(errorMessage)).getStatusCode();
-        assertEquals(HttpStatus.BAD_REQUEST, actual);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, actual);
     }
 }
