@@ -52,6 +52,5 @@ public class ControllerAdviceTest {
     public void testExceptionHandler() {
         HttpStatus actual = advice.exceptionHandler(new Exception(errorMessage)).getStatusCode();
         assertEquals(HttpStatus.BAD_REQUEST, actual);
-
     }
 }
