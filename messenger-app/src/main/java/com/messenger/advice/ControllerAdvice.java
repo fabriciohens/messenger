@@ -1,5 +1,7 @@
-package com.messenger.controller;
+package com.messenger.advice;
 
+import com.messenger.controller.RoomController;
+import com.messenger.controller.UserController;
 import com.messenger.exception.MessageNotFoundException;
 import com.messenger.exception.RoomNotFoundException;
 import com.messenger.exception.UserNotFoundException;
@@ -16,35 +18,35 @@ public class ControllerAdvice {
     @ResponseBody
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    ResponseEntity<String> userNotFoundHandler(final UserNotFoundException e) {
+    public ResponseEntity<String> userNotFoundHandler(final UserNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 
     @ResponseBody
     @ExceptionHandler(RoomNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    ResponseEntity<String> roomNotFoundHandler(final RoomNotFoundException e) {
+    public ResponseEntity<String> roomNotFoundHandler(final RoomNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 
     @ResponseBody
     @ExceptionHandler(MessageNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    ResponseEntity<String> messageNotFoundHandler(final MessageNotFoundException e) {
+    public ResponseEntity<String> messageNotFoundHandler(final MessageNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 
     @ResponseBody
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    ResponseEntity<String> illegalArgumentHandler(final IllegalArgumentException e) {
+    public ResponseEntity<String> illegalArgumentHandler(final IllegalArgumentException e) {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(e.getMessage());
     }
 
     @ResponseBody
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    ResponseEntity<String> exceptionHandler(final Exception e) {
+    public ResponseEntity<String> exceptionHandler(final Exception e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
 }

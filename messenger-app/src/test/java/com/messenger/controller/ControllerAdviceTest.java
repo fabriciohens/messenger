@@ -1,5 +1,6 @@
 package com.messenger.controller;
 
+import com.messenger.advice.ControllerAdvice;
 import com.messenger.exception.MessageNotFoundException;
 import com.messenger.exception.RoomNotFoundException;
 import com.messenger.exception.UserNotFoundException;
